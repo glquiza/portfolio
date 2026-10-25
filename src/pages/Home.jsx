@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import LoadingScreen from '../components/LoadingScreen';
 import InteractiveBackground from '../components/InteractiveBackground';
+import CustomCursor from '../components/CustomCursor';
 import Navbar from '../components/Navbar';
 import Hero from '../components/Hero';
 import Marquee from '../components/Marquee';
@@ -50,6 +51,9 @@ export default function Home() {
 
       {/* Mouse-Interactive Moving Background */}
       <InteractiveBackground />
+
+      {/* Option B: Magnetic Dynamic Studio Cursor */}
+      <CustomCursor />
 
       {/* Fixed Sticky Studio Navigation */}
       <Navbar />
