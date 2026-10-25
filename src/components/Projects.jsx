@@ -1,5 +1,6 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import ProjectCard from './ProjectCard';
+import ProjectInspectorModal from './ProjectInspectorModal';
 import { projects } from '../data/projectsData';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -9,6 +10,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 export default function Projects() {
   const sectionRef = useRef(null);
+  const [inspectedProject, setInspectedProject] = useState(null);
 
   useGSAP(() => {
     gsap.from('.projects-header', {
@@ -51,11 +53,24 @@ export default function Projects() {
         {/* Editorial Projects Listing */}
         <div className="divide-y divide-black/[0.08]">
           {projects.map((project, idx) => (
-            <ProjectCard key={project.id} project={project} index={idx} />
+            <ProjectCard 
+              key={project.id} 
+              project={project} 
+              index={idx} 
+              onInspect={(proj) => setInspectedProject(proj)}
+            />
           ))}
         </div>
 
       </div>
+
+      {/* Option C: Flip-Powered Project Inspector Modal */}
+      {inspectedProject && (
+        <ProjectInspectorModal 
+          project={inspectedProject} 
+          onClose={() => setInspectedProject(null)} 
+        />
+      )}
     </section>
   );
 }

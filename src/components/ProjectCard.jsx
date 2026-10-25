@@ -8,7 +8,7 @@ import { useGSAP } from '@gsap/react';
 
 gsap.registerPlugin(ScrollTrigger);
 
-export default function ProjectCard({ project, index }) {
+export default function ProjectCard({ project, index, onInspect }) {
   const { title, description, tech, image, githubUrl, liveUrl, category, year } = project;
   const cardRef = useRef(null);
 
@@ -85,17 +85,29 @@ export default function ProjectCard({ project, index }) {
 
           </div>
 
-          {/* Bottom Bar: Action Links */}
+          {/* Bottom Bar: Action Links & Option C Inspector Trigger */}
           <div className="pt-4 flex flex-wrap items-center justify-between gap-4 border-t border-black/[0.08]">
-            <a
-              href={liveUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group inline-flex items-center gap-3 text-base font-semibold text-charcoal hover:text-terracotta transition-colors py-2 font-display uppercase tracking-wider"
-            >
-              <span>Explore live demo</span>
-              <ArrowRight className="w-4 h-4 group-hover:translate-x-1.5 transition-transform text-terracotta" />
-            </a>
+            <div className="flex items-center gap-4">
+              <button
+                onClick={() => onInspect && onInspect(project)}
+                className="group inline-flex items-center gap-2 text-base font-semibold text-charcoal hover:text-terracotta transition-colors py-2 font-display uppercase tracking-wider focus:outline-none"
+                aria-label={`Inspect ${title} case study`}
+              >
+                <span>Read the case</span>
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-1.5 transition-transform text-terracotta" />
+              </button>
+
+              <span className="text-black/[0.2] font-mono">•</span>
+
+              <a
+                href={liveUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-xs font-mono uppercase tracking-widest text-charcoal-muted hover:text-charcoal underline underline-offset-4 transition-colors"
+              >
+                Live demo ↗
+              </a>
+            </div>
 
             <a
               href={githubUrl}
