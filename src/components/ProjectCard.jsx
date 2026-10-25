@@ -34,7 +34,7 @@ export default function ProjectCard({ project, index, onInspect }) {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
         
         {/* Left Side: Option A - 3D Perspective Sliced Device Mockup (Driezie Studio Reference) */}
-        <div className="lg:col-span-6 flex justify-center" data-cursor="view">
+        <div className="lg:col-span-6 flex justify-center">
           <SlicedDeviceMockup 
             image={image} 
             title={title} 

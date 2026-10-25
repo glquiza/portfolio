@@ -93,11 +93,10 @@ export default function HorizontalStrip() {
         </div>
       </div>
 
-      {/* Draggable Track Container with Option B Magnetic Cursor Support */}
-      <div className="px-6 sm:px-8 lg:px-12" data-cursor="drag">
+      {/* Draggable Track Container */}
+      <div className="px-6 sm:px-8 lg:px-12">
         <div 
           ref={trackRef}
-          data-cursor="drag"
           className="flex gap-6 w-max select-none will-change-transform"
         >
           {labExperiments.map((item, index) => (
