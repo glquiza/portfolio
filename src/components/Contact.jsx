@@ -1,74 +1,123 @@
-import React from 'react';
-import { Mail, ArrowUpRight, MessageSquare } from 'lucide-react';
+import React, { useState } from 'react';
+import { ArrowUpRight, Copy, Check, Mail } from 'lucide-react';
 import { GithubIcon, LinkedinIcon } from './Icons';
 import { personalInfo } from '../data/projectsData';
 
 export default function Contact() {
   const { email, github, linkedin } = personalInfo.contact;
+  const [copied, setCopied] = useState(false);
+
+  const copyEmail = () => {
+    navigator.clipboard.writeText(email);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2500);
+  };
 
   return (
-    <section id="contact" className="py-20 sm:py-28 border-t border-slate-900 bg-slate-950/60 relative">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="contact" className="py-28 sm:py-40 bg-[#09090b] border-t border-neutral-800 relative">
+      <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
         
-        <div className="max-w-3xl mx-auto text-center space-y-4 mb-12">
-          <p className="text-sky-400 font-semibold tracking-wider text-xs uppercase inline-flex items-center gap-2">
-            <MessageSquare className="w-4 h-4" /> Get in Touch
-          </p>
-          <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-white">
-            Let's build something together.
+        {/* Section Header */}
+        <div className="space-y-4 mb-16">
+          <div className="flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-neutral-400">
+            <span className="text-white font-bold">[ 06 ]</span>
+            <span>COMMISSION & INQUIRIES</span>
+          </div>
+
+          <h2 className="font-display font-extrabold uppercase text-4xl sm:text-6xl md:text-7xl lg:text-8xl tracking-tight text-white leading-[0.95] max-w-5xl">
+            HAVE A PROJECT IN MIND? <br />
+            <span className="text-neutral-500">LET'S BUILD SOMETHING EXCEPTIONAL.</span>
           </h2>
-          <p className="text-slate-300 text-base sm:text-lg max-w-xl mx-auto">
-            Whether you have an upcoming project, an opportunity, or just want to chat about web technology, my inbox is always open.
-          </p>
         </div>
 
-        {/* Contact Links Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-3xl mx-auto">
-          {/* Email card */}
-          <a
-            href={`mailto:${email}`}
-            className="flex flex-col items-center p-6 rounded-2xl bg-slate-900/80 border border-slate-800 hover:border-sky-500/50 hover:bg-slate-900 transition-all group"
-          >
-            <div className="p-3 rounded-xl bg-sky-500/10 text-sky-400 border border-sky-500/20 group-hover:scale-110 transition-transform mb-3">
-              <Mail className="w-6 h-6" />
+        {/* Large Action Hub */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch pt-8 border-t border-neutral-800">
+          
+          {/* Main Direct Email Action Card */}
+          <div className="lg:col-span-7 p-8 sm:p-12 bg-[#101014] border border-neutral-800 hover:border-neutral-600 transition-all flex flex-col justify-between space-y-8">
+            <div className="space-y-3">
+              <span className="font-mono text-xs uppercase tracking-widest text-neutral-400">
+                DIRECT INBOX
+              </span>
+              <p className="font-display font-bold text-2xl sm:text-3xl text-white break-all">
+                {email}
+              </p>
+              <p className="text-neutral-400 text-sm max-w-md">
+                Available for full-time front-end opportunities, contract collaborations, and creative engineering commissions.
+              </p>
             </div>
-            <span className="font-semibold text-white text-sm mb-1">Email Me</span>
-            <span className="text-xs text-slate-400 group-hover:text-sky-300 transition-colors flex items-center gap-1">
-              {email} <ArrowUpRight className="w-3 h-3" />
-            </span>
-          </a>
 
-          {/* GitHub card */}
-          <a
-            href={github}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex flex-col items-center p-6 rounded-2xl bg-slate-900/80 border border-slate-800 hover:border-slate-700 hover:bg-slate-900 transition-all group"
-          >
-            <div className="p-3 rounded-xl bg-slate-800 text-slate-200 border border-slate-700 group-hover:scale-110 transition-transform mb-3">
-              <GithubIcon className="w-6 h-6" />
-            </div>
-            <span className="font-semibold text-white text-sm mb-1">GitHub</span>
-            <span className="text-xs text-slate-400 group-hover:text-slate-200 transition-colors flex items-center gap-1">
-              Follow & Star <ArrowUpRight className="w-3 h-3" />
-            </span>
-          </a>
+            <div className="flex flex-wrap items-center gap-4">
+              <a
+                href={`mailto:${email}`}
+                className="group inline-flex items-center gap-2.5 px-7 py-4 bg-white text-black font-mono text-xs uppercase tracking-wider font-semibold hover:bg-neutral-200 transition-all active:scale-[0.98]"
+              >
+                <span>OPEN EMAIL CLIENT</span>
+                <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+              </a>
 
-          {/* LinkedIn card */}
-          <a
-            href={linkedin}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex flex-col items-center p-6 rounded-2xl bg-slate-900/80 border border-slate-800 hover:border-indigo-500/50 hover:bg-slate-900 transition-all group"
-          >
-            <div className="p-3 rounded-xl bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 group-hover:scale-110 transition-transform mb-3">
-              <LinkedinIcon className="w-6 h-6" />
+              <button
+                onClick={copyEmail}
+                className="inline-flex items-center gap-2 px-6 py-4 border border-neutral-700 hover:border-white text-neutral-300 hover:text-white font-mono text-xs uppercase tracking-wider transition-all hover:bg-white/[0.04]"
+                aria-label="Copy email address to clipboard"
+              >
+                {copied ? <Check className="w-4 h-4 text-emerald-400" /> : <Copy className="w-4 h-4" />}
+                <span>{copied ? 'COPIED TO CLIPBOARD' : 'COPY ADDRESS'}</span>
+              </button>
             </div>
-            <span className="font-semibold text-white text-sm mb-1">LinkedIn</span>
-            <span className="text-xs text-slate-400 group-hover:text-indigo-300 transition-colors flex items-center gap-1">
-              Connect <ArrowUpRight className="w-3 h-3" />
-            </span>
-          </a>
+          </div>
+
+          {/* Social Channels Side Grid */}
+          <div className="lg:col-span-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-6">
+            
+            {/* GitHub Card */}
+            <a
+              href={github}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="p-8 bg-[#101014] border border-neutral-800 hover:border-white transition-all flex items-center justify-between group"
+            >
+              <div className="flex items-center gap-4">
+                <div className="p-3 bg-neutral-900 border border-neutral-800 text-white">
+                  <GithubIcon className="w-5 h-5" />
+                </div>
+                <div>
+                  <span className="font-display font-bold uppercase text-lg text-white block">
+                    GITHUB
+                  </span>
+                  <span className="font-mono text-xs text-neutral-500 block">
+                    Source Code & Repos
+                  </span>
+                </div>
+              </div>
+              <ArrowUpRight className="w-5 h-5 text-neutral-500 group-hover:text-white group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all" />
+            </a>
+
+            {/* LinkedIn Card */}
+            <a
+              href={linkedin}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="p-8 bg-[#101014] border border-neutral-800 hover:border-white transition-all flex items-center justify-between group"
+            >
+              <div className="flex items-center gap-4">
+                <div className="p-3 bg-neutral-900 border border-neutral-800 text-white">
+                  <LinkedinIcon className="w-5 h-5" />
+                </div>
+                <div>
+                  <span className="font-display font-bold uppercase text-lg text-white block">
+                    LINKEDIN
+                  </span>
+                  <span className="font-mono text-xs text-neutral-500 block">
+                    Professional Network
+                  </span>
+                </div>
+              </div>
+              <ArrowUpRight className="w-5 h-5 text-neutral-500 group-hover:text-white group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all" />
+            </a>
+
+          </div>
+
         </div>
 
       </div>

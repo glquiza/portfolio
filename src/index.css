@@ -5,10 +5,50 @@
 @layer base {
   html {
     scroll-behavior: smooth;
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
   }
   
   body {
-    @apply bg-slate-950 text-slate-100 antialiased selection:bg-sky-500 selection:text-white min-h-screen;
+    @apply bg-studio-950 text-studio-50 font-sans antialiased selection:bg-white selection:text-black min-h-screen overflow-x-hidden;
+  }
+
+  /* Custom subtle scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #09090b;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #27272a;
+    border-radius: 3px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #3f3f46;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+  .fine-border {
+    border-color: rgba(255, 255, 255, 0.08);
+  }
+  .fine-border-hover:hover {
+    border-color: rgba(255, 255, 255, 0.22);
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-delay: -1ms !important;
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    background-attachment: initial !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0s !important;
+    transition-delay: 0s !important;
   }
 }

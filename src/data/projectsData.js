@@ -1,20 +1,31 @@
 export const personalInfo = {
   name: "Gary Luis Alquiza",
-  tagline: "Frontend Developer & Creative Technologist crafting responsive, interactive web applications with modern React & GSAP.",
-  avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=500&q=80",
+  studioName: "ALQUIZA.STUDIO",
+  headline: "CREATIVE DEVELOPMENT & MOTION DESIGN FOR DIGITAL PRODUCTS.",
+  tagline: "Independent front-end developer crafting bespoke, high-performance web experiences with React, GSAP, and modern web standards.",
+  avatar: "/pfp.png",
+  location: "Davao del Sur, Philippines",
+  timezone: "GMT+8 (PHT)",
+  availability: "Available for Q1/Q2 Projects & Roles",
   bio: [
-    "I'm a frontend developer passionate about engineering intuitive, accessible, and performant user interfaces. Currently expanding my expertise in React component architectures, GSAP motion systems, and responsive web design.",
-    "Driven by curiosity and attention to detail, I enjoy turning design concepts into clean, functional code. When I'm not developing, I spend time exploring new web animation techniques and modern JavaScript patterns."
+    "I am an independent front-end developer and creative technologist focused on the intersection of aesthetic design, motion engineering, and strict web performance standards.",
+    "Rooted in modern React architecture and GSAP interaction design, I build digital experiences that feel tangible, smooth, and memorable. Every animation is intentional—crafted to elevate storytelling rather than decorate."
+  ],
+  stats: [
+    { label: "Selected Works", value: "03+" },
+    { label: "Target Frame Rate", value: "60 FPS" },
+    { label: "Mobile-First Score", value: "100%" },
+    { label: "Base Timezone", value: "GMT+8" },
   ],
   skills: [
-    "React",
-    "JavaScript (ES6+)",
-    "GSAP Animations",
+    "React 19 & Vite",
+    "GSAP ScrollTrigger",
+    "Motion Choreography",
     "Tailwind CSS",
-    "HTML5 & CSS3",
-    "Git & GitHub",
-    "Vite",
-    "Mobile-First Design"
+    "JavaScript ES6+",
+    "Responsive Architecture",
+    "Web Accessibility (a11y)",
+    "Git & GitHub Workflow"
   ],
   contact: {
     email: "garyalquiza@g.cjc.edu.ph",
@@ -23,32 +34,99 @@ export const personalInfo = {
   }
 };
 
+export const services = [
+  {
+    index: "01",
+    title: "Creative Front-End Development",
+    description: "Building custom, standards-compliant web applications with modern React, Vite, and component-driven architecture. Clean semantic code designed for longevity.",
+    tags: ["React 19", "Vite", "Component Systems", "Modern JavaScript"]
+  },
+  {
+    index: "02",
+    title: "Motion & GSAP Interaction Design",
+    description: "Choreographing scroll-triggered timelines, kinematic typography, page reveals, and fluid micro-interactions running at a locked 60 frames per second.",
+    tags: ["GSAP", "ScrollTrigger", "Micro-interactions", "Timeline Choreography"]
+  },
+  {
+    index: "03",
+    title: "Responsive & Ergonomic UI",
+    description: "Mobile-first, touch-optimized layouts engineered across every viewport. Fluid typography, balanced negative space, and intuitive tactile gestures.",
+    tags: ["Tailwind CSS", "Mobile-First", "Grid Systems", "Fluid Typography"]
+  },
+  {
+    index: "04",
+    title: "Accessibility & Performance Auditing",
+    description: "Ensuring web experiences remain usable, keyboard-navigable, and high-scoring on Lighthouse with full reduced-motion accommodations.",
+    tags: ["WCAG Standards", "Keyboard Focus", "Lighthouse 100", "Semantic HTML"]
+  }
+];
+
 export const projects = [
   {
     id: "project-1",
+    index: "01",
     title: "Interactive GSAP Storybook",
-    description: "A showcase of scroll-triggered animations, kinetic typography, and interactive canvas physics built with React and GSAP.",
+    category: "Motion Design & Creative Tech",
+    year: "2024",
+    description: "An editorial interactive canvas featuring scroll-triggered typography, staggered entrance choreography, and physics-driven micro-interactions built with React and GreenSock.",
     tech: ["React", "GSAP ScrollTrigger", "Tailwind CSS"],
-    image: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=800&q=80",
+    image: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=1200&q=80",
     githubUrl: "https://github.com",
     liveUrl: "https://react.dev"
   },
   {
     id: "project-2",
+    index: "02",
     title: "Minimalist Task & Focus Tracker",
-    description: "A productivity dashboard with drag-and-drop organization, custom timers, and smooth state transitions.",
+    category: "Web Application & Architecture",
+    year: "2024",
+    description: "A focused productivity workspace with drag-and-drop state organization, tactile timer feedback, and seamless client-side routing via React Router.",
     tech: ["React", "React Router", "Tailwind CSS", "GSAP"],
-    image: "https://images.unsplash.com/photo-1484480974693-6ca0a78fb36b?auto=format&fit=crop&w=800&q=80",
+    image: "https://images.unsplash.com/photo-1484480974693-6ca0a78fb36b?auto=format&fit=crop&w=1200&q=80",
     githubUrl: "https://github.com",
     liveUrl: "https://vitejs.dev"
   },
   {
     id: "project-3",
+    index: "03",
     title: "Dynamic Weather & Air Quality Radar",
-    description: "Real-time meteorological forecast application featuring animated data charts, geolocation queries, and responsive card layouts.",
+    category: "API Integration & Motion",
+    year: "2024",
+    description: "Meteorological telemetry dashboard featuring real-time API queries, animated data visualization charts, geolocation queries, and responsive card layouts.",
     tech: ["React", "Tailwind CSS", "REST API", "GSAP Flip"],
-    image: "https://images.unsplash.com/photo-1592210454359-9043f067919b?auto=format&fit=crop&w=800&q=80",
+    image: "https://images.unsplash.com/photo-1592210454359-9043f067919b?auto=format&fit=crop&w=1200&q=80",
     githubUrl: "https://github.com",
     liveUrl: "https://tailwindcss.com"
+  }
+];
+
+export const labExperiments = [
+  {
+    id: "exp-1",
+    title: "Kinetic Monospace Ticker",
+    tag: "GSAP Motion",
+    status: "Active",
+    desc: "Infinite smooth ticker system with variable speed controls."
+  },
+  {
+    id: "exp-2",
+    title: "Tactile Cursor Magnetic Bounds",
+    tag: "Interaction",
+    status: "Lab Release",
+    desc: "Spring physics attraction for interactive navigation anchors."
+  },
+  {
+    id: "exp-3",
+    title: "Dimensional Device Mockups",
+    tag: "CSS 3D",
+    status: "In Production",
+    desc: "Hardware-accelerated perspective tilts with zero layout shift."
+  },
+  {
+    id: "exp-4",
+    title: "Clip-Path Mask Transitions",
+    tag: "SVG & Canvas",
+    status: "Prototyped",
+    desc: "Angled wipe reveals inspired by modern editorial studio sites."
   }
 ];
