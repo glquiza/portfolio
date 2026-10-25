@@ -12,34 +12,34 @@ export default {
         mono: ['"JetBrains Mono"', 'ui-monospace', 'monospace'],
       },
       colors: {
-        studio: {
-          950: '#09090b',
-          900: '#111114',
-          850: '#16161a',
-          800: '#1f1f24',
-          700: '#2c2c34',
-          600: '#40404a',
-          400: '#a1a1aa',
-          200: '#e4e4e7',
-          50: '#fafafa',
+        parchment: {
+          DEFAULT: '#F4F0EA',
+          50: '#FCFAF7',
+          100: '#FAF8F5',
+          200: '#EDE8E0',
+          300: '#E2DDD5',
+          400: '#D4CDC2',
+          border: '#DCD7CF',
         },
-        accent: {
-          DEFAULT: '#ffffff',
-          dim: '#8e8e99',
+        charcoal: {
+          DEFAULT: '#121212',
+          muted: '#57534E',
+          subtle: '#8A857D',
+          light: '#A8A29E',
+        },
+        terracotta: {
+          DEFAULT: '#D97746',
+          hover: '#C86737',
+          light: '#F5ECE6',
         }
       },
       animation: {
-        'marquee': 'marquee 28s linear infinite',
-        'marquee-reverse': 'marquee-reverse 28s linear infinite',
+        'marquee': 'marquee 30s linear infinite',
       },
       keyframes: {
         marquee: {
           '0%': { transform: 'translateX(0%)' },
           '100%': { transform: 'translateX(-50%)' },
-        },
-        'marquee-reverse': {
-          '0%': { transform: 'translateX(-50%)' },
-          '100%': { transform: 'translateX(0%)' },
         }
       }
     },

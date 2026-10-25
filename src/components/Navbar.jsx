@@ -9,68 +9,72 @@ export default function Navbar() {
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 40);
+      setScrolled(window.scrollY > 30);
     };
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   const navLinks = [
-    { label: 'WORK', href: '#projects', index: '01' },
-    { label: 'LAB', href: '#lab', index: '02' },
-    { label: 'SERVICES', href: '#services', index: '03' },
-    { label: 'STUDIO', href: '#about', index: '04' },
-    { label: 'CONTACT', href: '#contact', index: '05' },
+    { label: 'Work', href: '#projects', badge: '03' },
+    { label: 'Lab', href: '#lab' },
+    { label: 'Studio', href: '#about' },
+    { label: 'Services', href: '#services' },
   ];
 
   return (
     <header 
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         scrolled 
-          ? 'bg-[#09090b]/90 backdrop-blur-md border-b border-white/[0.08] py-4' 
+          ? 'bg-[#F4F0EA]/95 backdrop-blur-md border-b border-black/[0.08] py-4 shadow-sm' 
           : 'bg-transparent border-b border-transparent py-6'
       }`}
     >
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 flex items-center justify-between">
         
-        {/* Brand / Logo */}
+        {/* Brand / Logo (matching reference header) */}
         <a 
           href="#hero" 
-          className="group flex items-center gap-3 text-sm font-bold tracking-tight text-white focus:outline-none"
+          className="group flex items-center gap-3 text-charcoal focus:outline-none"
         >
-          <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
-          <span className="font-display tracking-wider text-base uppercase group-hover:text-neutral-300 transition-colors">
+          {/* Studio geometric mark */}
+          <div className="w-6 h-6 flex flex-col justify-between py-1">
+            <span className="w-6 h-1 bg-charcoal rounded-full group-hover:bg-terracotta transition-colors"></span>
+            <span className="w-4 h-1 bg-charcoal rounded-full group-hover:w-6 transition-all"></span>
+            <span className="w-2 h-1 bg-charcoal rounded-full group-hover:w-6 transition-all"></span>
+          </div>
+
+          <span className="font-display font-bold text-lg tracking-tight text-charcoal">
             {personalInfo.name}
-          </span>
-          <span className="hidden sm:inline-block font-mono text-[11px] text-neutral-500 font-normal pl-2 border-l border-neutral-800">
-            CREATIVE DEV
           </span>
         </a>
 
-        {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center gap-8 text-xs font-mono tracking-widest uppercase">
+        {/* Desktop Navigation Links */}
+        <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-charcoal">
           {navLinks.map((link) => (
             <a 
               key={link.label}
               href={link.href} 
-              className="group relative py-1 text-neutral-400 hover:text-white transition-colors flex items-center gap-1.5"
+              className="group relative py-1 text-charcoal-muted hover:text-charcoal transition-colors flex items-center gap-1.5"
             >
-              <span className="text-[10px] text-neutral-600 group-hover:text-neutral-400 transition-colors">
-                {link.index}
-              </span>
               <span>{link.label}</span>
-              <span className="absolute bottom-0 left-0 w-0 h-px bg-white group-hover:w-full transition-all duration-300"></span>
+              {link.badge && (
+                <span className="font-mono text-[10px] text-terracotta font-semibold">
+                  {link.badge}
+                </span>
+              )}
+              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-terracotta group-hover:w-full transition-all duration-300"></span>
             </a>
           ))}
 
-          {/* External Social Links */}
-          <div className="flex items-center gap-3 pl-4 border-l border-neutral-800">
+          {/* Social Icons */}
+          <div className="flex items-center gap-3 pl-2 border-l border-black/[0.08]">
             <a 
               href={personalInfo.contact.github} 
               target="_blank" 
               rel="noopener noreferrer" 
               aria-label="GitHub Profile" 
-              className="p-1.5 rounded text-neutral-400 hover:text-white hover:bg-neutral-900 transition-all"
+              className="p-1.5 text-charcoal-subtle hover:text-charcoal transition-colors"
             >
               <GithubIcon className="w-4 h-4" />
             </a>
@@ -79,17 +83,26 @@ export default function Navbar() {
               target="_blank" 
               rel="noopener noreferrer" 
               aria-label="LinkedIn Profile" 
-              className="p-1.5 rounded text-neutral-400 hover:text-white hover:bg-neutral-900 transition-all"
+              className="p-1.5 text-charcoal-subtle hover:text-charcoal transition-colors"
             >
               <LinkedinIcon className="w-4 h-4" />
             </a>
           </div>
+
+          {/* Signature Terracotta CTA Button (Matching Driezie Studio Screenshot) */}
+          <a
+            href="#contact"
+            className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-md bg-terracotta hover:bg-terracotta-hover text-white font-medium text-sm shadow-sm transition-all active:scale-95"
+          >
+            <span>Contact</span>
+            <ArrowUpRight className="w-4 h-4" />
+          </a>
         </nav>
 
         {/* Mobile Menu Trigger */}
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className="md:hidden p-2 text-neutral-300 hover:text-white border border-neutral-800 rounded bg-[#111114] focus:outline-none focus:ring-1 focus:ring-white"
+          className="md:hidden p-2 text-charcoal border border-black/[0.1] rounded bg-[#EDE8E0] focus:outline-none"
           aria-label={isOpen ? "Close menu" : "Open menu"}
           aria-expanded={isOpen}
         >
@@ -99,31 +112,32 @@ export default function Navbar() {
 
       {/* Mobile Drawer */}
       {isOpen && (
-        <div className="md:hidden fixed inset-x-0 top-[73px] bg-[#0c0c0e]/98 backdrop-blur-xl border-b border-neutral-800 px-6 py-8 space-y-6 animate-in fade-in duration-200">
+        <div className="md:hidden fixed inset-x-0 top-[73px] bg-[#F4F0EA]/98 backdrop-blur-xl border-b border-black/[0.08] px-6 py-8 space-y-6 shadow-xl animate-in fade-in duration-200">
           <div className="space-y-4">
             {navLinks.map((link) => (
               <a 
                 key={link.label}
                 href={link.href} 
                 onClick={() => setIsOpen(false)}
-                className="flex items-center justify-between py-3 border-b border-neutral-900 text-lg font-display tracking-wide uppercase text-neutral-300 hover:text-white"
+                className="flex items-center justify-between py-3 border-b border-black/[0.06] text-lg font-display tracking-tight text-charcoal hover:text-terracotta"
               >
                 <span>{link.label}</span>
-                <span className="font-mono text-xs text-neutral-500">{link.index}</span>
+                {link.badge && (
+                  <span className="font-mono text-xs text-terracotta font-semibold">{link.badge}</span>
+                )}
               </a>
             ))}
           </div>
 
-          <div className="flex items-center justify-between pt-4 text-xs font-mono uppercase text-neutral-400">
-            <span>{personalInfo.location}</span>
-            <div className="flex items-center gap-4">
-              <a href={personalInfo.contact.github} target="_blank" rel="noopener noreferrer" className="hover:text-white">
-                GITHUB
-              </a>
-              <a href={personalInfo.contact.linkedin} target="_blank" rel="noopener noreferrer" className="hover:text-white">
-                LINKEDIN
-              </a>
-            </div>
+          <div className="pt-2">
+            <a
+              href="#contact"
+              onClick={() => setIsOpen(false)}
+              className="w-full flex items-center justify-center gap-2 py-3.5 bg-terracotta text-white font-medium text-sm rounded shadow-sm"
+            >
+              <span>Contact Me</span>
+              <ArrowUpRight className="w-4 h-4" />
+            </a>
           </div>
         </div>
       )}

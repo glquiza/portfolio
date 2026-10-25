@@ -1,5 +1,5 @@
-import React, { useRef, useState, useEffect } from 'react';
-import { ArrowLeft, ArrowRight, FlaskConical, Terminal } from 'lucide-react';
+import React, { useRef, useState } from 'react';
+import { ArrowLeft, ArrowRight, Terminal } from 'lucide-react';
 import { labExperiments } from '../data/projectsData';
 
 export default function HorizontalStrip() {
@@ -40,31 +40,28 @@ export default function HorizontalStrip() {
     carouselRef.current.scrollLeft = scrollLeftState - walk;
   };
 
-  // Keyboard navigation support
   const handleKeyDown = (e) => {
-    if (e.key === 'ArrowLeft') {
-      scroll('left');
-    } else if (e.key === 'ArrowRight') {
-      scroll('right');
-    }
+    if (e.key === 'ArrowLeft') scroll('left');
+    else if (e.key === 'ArrowRight') scroll('right');
   };
 
   return (
     <section 
       id="lab" 
-      className="py-24 sm:py-32 bg-[#0c0c0e] border-y border-neutral-800"
+      className="py-24 sm:py-32 bg-[#EFEBE4] border-b border-black/[0.08]"
       onKeyDown={handleKeyDown}
       tabIndex={0}
       aria-label="Upcoming Interaction Lab Carousel"
     >
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 mb-12">
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 pb-8 border-b border-neutral-800">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 pb-8 border-b border-black/[0.08]">
           <div className="space-y-3">
-            <div className="flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-neutral-400">
-              <span className="text-white font-bold">[ 03 ]</span>
-              <span>MOTION & EXPERIMENTAL LAB</span>
+            <div className="flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-charcoal-subtle">
+              <span className="w-2 h-2 rounded-full bg-terracotta"></span>
+              <span className="text-charcoal font-bold">[ 03 ]</span>
+              <span>EXPERIMENTAL LAB</span>
             </div>
-            <h2 className="font-display font-extrabold uppercase text-3xl sm:text-5xl tracking-tight text-white">
+            <h2 className="font-display font-extrabold uppercase text-3xl sm:text-5xl tracking-tight text-charcoal">
               INTERACTION LAB STRIP
             </h2>
           </div>
@@ -73,14 +70,14 @@ export default function HorizontalStrip() {
           <div className="flex items-center gap-3">
             <button
               onClick={() => scroll('left')}
-              className="p-3 bg-neutral-900 border border-neutral-800 text-neutral-300 hover:text-white hover:border-white transition-all focus:outline-none focus:ring-1 focus:ring-white active:scale-95"
+              className="p-3 bg-[#F4F0EA] border border-black/[0.1] text-charcoal hover:border-charcoal hover:bg-white transition-all focus:outline-none focus:ring-1 focus:ring-charcoal active:scale-95"
               aria-label="Previous lab item"
             >
               <ArrowLeft className="w-5 h-5" />
             </button>
             <button
               onClick={() => scroll('right')}
-              className="p-3 bg-neutral-900 border border-neutral-800 text-neutral-300 hover:text-white hover:border-white transition-all focus:outline-none focus:ring-1 focus:ring-white active:scale-95"
+              className="p-3 bg-[#F4F0EA] border border-black/[0.1] text-charcoal hover:border-charcoal hover:bg-white transition-all focus:outline-none focus:ring-1 focus:ring-charcoal active:scale-95"
               aria-label="Next lab item"
             >
               <ArrowRight className="w-5 h-5" />
@@ -104,36 +101,36 @@ export default function HorizontalStrip() {
         {labExperiments.map((item, index) => (
           <div 
             key={item.id}
-            className="w-[300px] sm:w-[380px] shrink-0 p-8 bg-[#111115] border border-neutral-800 hover:border-neutral-600 transition-all flex flex-col justify-between group"
+            className="w-[300px] sm:w-[380px] shrink-0 p-8 bg-[#F4F0EA] border border-black/[0.08] hover:border-charcoal transition-all flex flex-col justify-between group shadow-sm"
           >
             <div className="space-y-6">
-              <div className="flex items-center justify-between font-mono text-xs text-neutral-500">
+              <div className="flex items-center justify-between font-mono text-xs text-charcoal-subtle">
                 <span>LAB / 0{index + 1}</span>
-                <span className="px-2 py-0.5 bg-neutral-900 border border-neutral-800 text-emerald-400 font-medium text-[10px] uppercase tracking-wider">
+                <span className="px-2 py-0.5 bg-terracotta/10 text-terracotta font-medium text-[10px] uppercase tracking-wider rounded">
                   {item.status}
                 </span>
               </div>
 
               <div className="space-y-2">
-                <span className="font-mono text-xs uppercase tracking-widest text-neutral-400">
+                <span className="font-mono text-xs uppercase tracking-widest text-charcoal-subtle">
                   {item.tag}
                 </span>
-                <h3 className="font-display font-bold uppercase text-xl text-white group-hover:text-neutral-200 transition-colors">
+                <h3 className="font-display font-bold uppercase text-xl text-charcoal group-hover:text-terracotta transition-colors">
                   {item.title}
                 </h3>
               </div>
 
-              <p className="text-neutral-400 text-sm leading-relaxed">
+              <p className="text-charcoal-muted text-sm leading-relaxed">
                 {item.desc}
               </p>
             </div>
 
-            <div className="pt-8 border-t border-neutral-800/80 flex items-center justify-between font-mono text-xs text-neutral-500">
+            <div className="pt-8 border-t border-black/[0.08] flex items-center justify-between font-mono text-xs text-charcoal-subtle">
               <span className="flex items-center gap-1.5">
-                <Terminal className="w-3.5 h-3.5 text-neutral-400" />
+                <Terminal className="w-3.5 h-3.5 text-terracotta" />
                 <span>60FPS GSAP</span>
               </span>
-              <span className="text-white group-hover:translate-x-1 transition-transform">→</span>
+              <span className="text-charcoal group-hover:translate-x-1 transition-transform">→</span>
             </div>
           </div>
         ))}
