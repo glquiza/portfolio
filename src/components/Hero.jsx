@@ -2,55 +2,75 @@ import React, { useRef } from 'react';
 import { ArrowDownRight, ArrowUpRight, ArrowDown } from 'lucide-react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { SplitText } from 'gsap/SplitText';
 import { useGSAP } from '@gsap/react';
 import { personalInfo } from '../data/projectsData';
 
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(ScrollTrigger, SplitText);
 
 export default function Hero() {
   const containerRef = useRef(null);
   const floatingImageRef = useRef(null);
+  const headingRef = useRef(null);
 
   useGSAP(() => {
     const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
 
-    // Choreographed entrance sequence matching Driezie Studio standards
+    // GSAP SplitText line and word reveal
+    try {
+      const split = new SplitText(headingRef.current, {
+        type: 'lines,words',
+        linesClass: 'overflow-hidden leading-tight',
+      });
+
+      tl.from(split.words, {
+        yPercent: 120,
+        opacity: 0,
+        stagger: 0.04,
+        duration: 1,
+        ease: 'power4.out',
+      });
+    } catch (e) {
+      // Graceful fallback if SplitText encounters DOM restrictions
+      tl.from('.hero-line-reveal', {
+        opacity: 0,
+        y: 40,
+        duration: 0.9,
+        stagger: 0.12,
+      });
+    }
+
+    // Staggered metadata and CTAs
     tl.from('.hero-meta-tag', {
       opacity: 0,
       y: -15,
-      duration: 0.7,
-      stagger: 0.1,
-    })
-    .from('.hero-line-reveal', {
-      opacity: 0,
-      y: 40,
-      duration: 0.9,
-      stagger: 0.12,
-    }, '-=0.4')
+      duration: 0.6,
+      stagger: 0.08,
+    }, '-=0.8')
     .from('.hero-description', {
       opacity: 0,
       y: 20,
-      duration: 0.8,
-    }, '-=0.5')
+      duration: 0.7,
+    }, '-=0.6')
     .from('.hero-cta-btn', {
       opacity: 0,
       y: 15,
-      stagger: 0.15,
+      stagger: 0.12,
       duration: 0.6,
     }, '-=0.5')
     .from(floatingImageRef.current, {
       opacity: 0,
       scale: 0.92,
       y: 40,
-      duration: 1.2,
+      duration: 1.1,
       ease: 'power2.out',
-    }, '-=0.8')
+    }, '-=0.7')
     .from('.hero-scroll-indicator', {
       opacity: 0,
-      duration: 0.8,
-    }, '-=0.4');
+      duration: 0.7,
+    }, '-=0.3');
 
-    // 1. Continuous Ambient Floating Animation
+    // 1. Continuous Ambient Floating Animation (Sine Wave)
     gsap.to(floatingImageRef.current, {
       y: -18,
       rotation: 1.2,
@@ -101,9 +121,12 @@ export default function Hero() {
           </div>
         </div>
 
-        {/* Main Headline */}
+        {/* Main Headline with SplitText Mask */}
         <div className="space-y-3 mb-12">
-          <h1 className="font-display font-extrabold uppercase tracking-tight text-charcoal text-4xl sm:text-6xl md:text-7xl lg:text-8xl leading-[0.95]">
+          <h1 
+            ref={headingRef}
+            className="font-display font-extrabold uppercase tracking-tight text-charcoal text-4xl sm:text-6xl md:text-7xl lg:text-8xl leading-[0.98]"
+          >
             <span className="hero-line-reveal block">CREATIVE FRONTEND</span>
             <span className="hero-line-reveal block text-charcoal-muted">
               & MOTION DESIGN
@@ -119,7 +142,7 @@ export default function Hero() {
           
           {/* Left: Description & CTAs */}
           <div className="lg:col-span-6 space-y-8">
-            <p className="hero-description text-charcoal-muted text-base sm:text-lg leading-relaxed max-w-xl font-normal">
+            <p className="hero-description font-body text-charcoal-muted text-base sm:text-lg leading-relaxed max-w-xl font-normal">
               {personalInfo.tagline}
             </p>
 
@@ -179,7 +202,7 @@ export default function Hero() {
                   <span className="text-terracotta font-semibold">GSAP 3</span>
                 </div>
 
-                {/* Sliced Visual Preview Preview */}
+                {/* Sliced Visual Preview */}
                 <div className="relative aspect-[16/10] overflow-hidden rounded-lg bg-black">
                   <img 
                     src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=1200&q=80" 

@@ -1,12 +1,31 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { Plus, Minus } from 'lucide-react';
 import { services } from '../data/projectsData';
+import gsap from 'gsap';
+import { Flip } from 'gsap/Flip';
+
+gsap.registerPlugin(Flip);
 
 export default function Services() {
   const [activeTab, setActiveTab] = useState(0);
+  const containerRef = useRef(null);
+
+  const toggleTab = (idx) => {
+    // Record layout state for GSAP Flip
+    const state = Flip.getState('.service-item-row');
+    setActiveTab(activeTab === idx ? null : idx);
+    
+    // Smoothly animate the layout delta
+    requestAnimationFrame(() => {
+      Flip.from(state, {
+        duration: 0.5,
+        ease: 'power2.inOut',
+      });
+    });
+  };
 
   return (
-    <section id="services" className="py-24 sm:py-36 border-b border-black/[0.08] relative">
+    <section id="services" ref={containerRef} className="py-24 sm:py-36 border-b border-black/[0.08] relative">
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
         
         {/* Section Header */}
@@ -21,12 +40,12 @@ export default function Services() {
               SERVICES & DISCIPLINES
             </h2>
           </div>
-          <p className="text-charcoal-muted font-mono text-xs uppercase tracking-widest max-w-xs">
+          <p className="font-body text-charcoal-muted font-mono text-xs uppercase tracking-widest max-w-xs">
             Engineering tailored for responsive ergonomics, standard compliance, and creative visual distinction.
           </p>
         </div>
 
-        {/* Numbered Services Editorial List */}
+        {/* Numbered Services Editorial List with GSAP Flip State Morphing */}
         <div className="divide-y divide-black/[0.08]">
           {services.map((service, idx) => {
             const isActive = activeTab === idx;
@@ -34,8 +53,8 @@ export default function Services() {
             return (
               <div 
                 key={service.index}
-                className="py-8 sm:py-12 group cursor-pointer transition-colors hover:bg-black/[0.02] px-2 sm:px-4"
-                onClick={() => setActiveTab(isActive ? null : idx)}
+                className="service-item-row py-8 sm:py-12 group cursor-pointer transition-colors hover:bg-black/[0.02] px-2 sm:px-4"
+                onClick={() => toggleTab(idx)}
               >
                 <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-start">
                   
@@ -51,7 +70,7 @@ export default function Services() {
 
                   {/* Description & Tags */}
                   <div className="md:col-span-5 space-y-4">
-                    <p className="text-charcoal-muted text-sm sm:text-base leading-relaxed">
+                    <p className="font-body text-charcoal-muted text-sm sm:text-base leading-relaxed">
                       {service.description}
                     </p>
 

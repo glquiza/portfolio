@@ -7,8 +7,9 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['"Plus Jakarta Sans"', 'system-ui', '-apple-system', 'sans-serif'],
-        display: ['"Syne"', '"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
+        sans: ['"Plus Jakarta Sans"', '"Inter"', 'system-ui', '-apple-system', 'sans-serif'],
+        display: ['"Plus Jakarta Sans"', '"Inter"', 'system-ui', 'sans-serif'],
+        body: ['"Inter"', 'system-ui', 'sans-serif'],
         mono: ['"JetBrains Mono"', 'ui-monospace', 'monospace'],
       },
       colors: {
@@ -22,9 +23,9 @@ export default {
           border: '#DCD7CF',
         },
         charcoal: {
-          DEFAULT: '#121212',
-          muted: '#57534E',
-          subtle: '#8A857D',
+          DEFAULT: '#111111',
+          muted: '#4B4944',
+          subtle: '#78736B',
           light: '#A8A29E',
         },
         terracotta: {

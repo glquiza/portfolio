@@ -1,56 +1,58 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import { ArrowLeft, ArrowRight, Terminal } from 'lucide-react';
 import { labExperiments } from '../data/projectsData';
+import gsap from 'gsap';
+import { Draggable } from 'gsap/Draggable';
+import { useGSAP } from '@gsap/react';
+
+gsap.registerPlugin(Draggable);
 
 export default function HorizontalStrip() {
-  const carouselRef = useRef(null);
-  const [isDragging, setIsDragging] = useState(false);
-  const [startX, setStartX] = useState(0);
-  const [scrollLeftState, setScrollLeftState] = useState(0);
+  const containerRef = useRef(null);
+  const trackRef = useRef(null);
 
-  const scroll = (direction) => {
-    if (!carouselRef.current) return;
-    const scrollAmount = carouselRef.current.clientWidth * 0.75;
-    carouselRef.current.scrollBy({
-      left: direction === 'left' ? -scrollAmount : scrollAmount,
-      behavior: 'smooth',
+  useGSAP(() => {
+    if (!trackRef.current || !containerRef.current) return;
+
+    // Calculate maximum drag offset
+    const getBounds = () => {
+      const containerWidth = containerRef.current.offsetWidth;
+      const trackWidth = trackRef.current.scrollWidth;
+      return {
+        minX: -(trackWidth - containerWidth + 60),
+        maxX: 0,
+      };
+    };
+
+    // GSAP Draggable with momentum and spring bounds
+    Draggable.create(trackRef.current, {
+      type: 'x',
+      edgeResistance: 0.75,
+      bounds: getBounds(),
+      inertia: true,
+      cursor: 'grab',
+      activeCursor: 'grabbing',
     });
-  };
+  }, { scope: containerRef });
 
-  // Mouse Drag Support
-  const handleMouseDown = (e) => {
-    setIsDragging(true);
-    setStartX(e.pageX - carouselRef.current.offsetLeft);
-    setScrollLeftState(carouselRef.current.scrollLeft);
-  };
-
-  const handleMouseLeave = () => {
-    setIsDragging(false);
-  };
-
-  const handleMouseUp = () => {
-    setIsDragging(false);
-  };
-
-  const handleMouseMove = (e) => {
-    if (!isDragging) return;
-    e.preventDefault();
-    const x = e.pageX - carouselRef.current.offsetLeft;
-    const walk = (x - startX) * 1.5;
-    carouselRef.current.scrollLeft = scrollLeftState - walk;
-  };
-
-  const handleKeyDown = (e) => {
-    if (e.key === 'ArrowLeft') scroll('left');
-    else if (e.key === 'ArrowRight') scroll('right');
+  const scrollByAmount = (direction) => {
+    if (!trackRef.current) return;
+    const currentX = gsap.getProperty(trackRef.current, 'x') || 0;
+    const moveAmount = 380;
+    const newX = direction === 'left' ? currentX + moveAmount : currentX - moveAmount;
+    
+    gsap.to(trackRef.current, {
+      x: Math.min(0, Math.max(-1200, newX)),
+      duration: 0.6,
+      ease: 'power2.out',
+    });
   };
 
   return (
     <section 
       id="lab" 
-      className="py-24 sm:py-32 bg-[#EFEBE4] border-b border-black/[0.08]"
-      onKeyDown={handleKeyDown}
-      tabIndex={0}
+      ref={containerRef}
+      className="py-24 sm:py-32 bg-[#EFEBE4] border-b border-black/[0.08] overflow-hidden"
       aria-label="Upcoming Interaction Lab Carousel"
     >
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 mb-12">
@@ -66,74 +68,74 @@ export default function HorizontalStrip() {
             </h2>
           </div>
 
-          {/* Interactive Navigation Controls */}
-          <div className="flex items-center gap-3">
-            <button
-              onClick={() => scroll('left')}
-              className="p-3 bg-[#F4F0EA] border border-black/[0.1] text-charcoal hover:border-charcoal hover:bg-white transition-all focus:outline-none focus:ring-1 focus:ring-charcoal active:scale-95"
-              aria-label="Previous lab item"
-            >
-              <ArrowLeft className="w-5 h-5" />
-            </button>
-            <button
-              onClick={() => scroll('right')}
-              className="p-3 bg-[#F4F0EA] border border-black/[0.1] text-charcoal hover:border-charcoal hover:bg-white transition-all focus:outline-none focus:ring-1 focus:ring-charcoal active:scale-95"
-              aria-label="Next lab item"
-            >
-              <ArrowRight className="w-5 h-5" />
-            </button>
+          {/* Interactive Controls & Drag Notice */}
+          <div className="flex items-center gap-4">
+            <span className="hidden sm:inline-block font-mono text-xs text-charcoal-subtle uppercase">
+              DRAG OR USE ARROWS →
+            </span>
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => scrollByAmount('left')}
+                className="p-3 bg-[#F4F0EA] border border-black/[0.1] text-charcoal hover:border-charcoal hover:bg-white transition-all focus:outline-none focus:ring-1 focus:ring-charcoal active:scale-95"
+                aria-label="Previous lab item"
+              >
+                <ArrowLeft className="w-5 h-5" />
+              </button>
+              <button
+                onClick={() => scrollByAmount('right')}
+                className="p-3 bg-[#F4F0EA] border border-black/[0.1] text-charcoal hover:border-charcoal hover:bg-white transition-all focus:outline-none focus:ring-1 focus:ring-charcoal active:scale-95"
+                aria-label="Next lab item"
+              >
+                <ArrowRight className="w-5 h-5" />
+              </button>
+            </div>
           </div>
         </div>
       </div>
 
-      {/* Horizontal Carousel Track */}
-      <div 
-        ref={carouselRef}
-        onMouseDown={handleMouseDown}
-        onMouseLeave={handleMouseLeave}
-        onMouseUp={handleMouseUp}
-        onMouseMove={handleMouseMove}
-        className={`flex gap-6 overflow-x-auto scrollbar-none px-6 sm:px-8 lg:px-12 select-none ${
-          isDragging ? 'cursor-grabbing' : 'cursor-grab'
-        }`}
-        style={{ scrollBehavior: isDragging ? 'auto' : 'smooth' }}
-      >
-        {labExperiments.map((item, index) => (
-          <div 
-            key={item.id}
-            className="w-[300px] sm:w-[380px] shrink-0 p-8 bg-[#F4F0EA] border border-black/[0.08] hover:border-charcoal transition-all flex flex-col justify-between group shadow-sm"
-          >
-            <div className="space-y-6">
-              <div className="flex items-center justify-between font-mono text-xs text-charcoal-subtle">
-                <span>LAB / 0{index + 1}</span>
-                <span className="px-2 py-0.5 bg-terracotta/10 text-terracotta font-medium text-[10px] uppercase tracking-wider rounded">
-                  {item.status}
-                </span>
+      {/* Draggable Track Container */}
+      <div className="px-6 sm:px-8 lg:px-12">
+        <div 
+          ref={trackRef}
+          className="flex gap-6 w-max select-none will-change-transform"
+        >
+          {labExperiments.map((item, index) => (
+            <div 
+              key={item.id}
+              className="w-[320px] sm:w-[400px] shrink-0 p-8 bg-[#F4F0EA] border border-black/[0.08] hover:border-charcoal transition-all flex flex-col justify-between group shadow-sm"
+            >
+              <div className="space-y-6">
+                <div className="flex items-center justify-between font-mono text-xs text-charcoal-subtle">
+                  <span>LAB / 0{index + 1}</span>
+                  <span className="px-2 py-0.5 bg-terracotta/10 text-terracotta font-medium text-[10px] uppercase tracking-wider rounded">
+                    {item.status}
+                  </span>
+                </div>
+
+                <div className="space-y-2">
+                  <span className="font-mono text-xs uppercase tracking-widest text-charcoal-subtle">
+                    {item.tag}
+                  </span>
+                  <h3 className="font-display font-bold uppercase text-xl text-charcoal group-hover:text-terracotta transition-colors">
+                    {item.title}
+                  </h3>
+                </div>
+
+                <p className="font-body text-charcoal-muted text-sm leading-relaxed">
+                  {item.desc}
+                </p>
               </div>
 
-              <div className="space-y-2">
-                <span className="font-mono text-xs uppercase tracking-widest text-charcoal-subtle">
-                  {item.tag}
+              <div className="pt-8 border-t border-black/[0.08] flex items-center justify-between font-mono text-xs text-charcoal-subtle">
+                <span className="flex items-center gap-1.5">
+                  <Terminal className="w-3.5 h-3.5 text-terracotta" />
+                  <span>GSAP DRAGGABLE & INERTIA</span>
                 </span>
-                <h3 className="font-display font-bold uppercase text-xl text-charcoal group-hover:text-terracotta transition-colors">
-                  {item.title}
-                </h3>
+                <span className="text-charcoal group-hover:translate-x-1.5 transition-transform font-bold">→</span>
               </div>
-
-              <p className="text-charcoal-muted text-sm leading-relaxed">
-                {item.desc}
-              </p>
             </div>
-
-            <div className="pt-8 border-t border-black/[0.08] flex items-center justify-between font-mono text-xs text-charcoal-subtle">
-              <span className="flex items-center gap-1.5">
-                <Terminal className="w-3.5 h-3.5 text-terracotta" />
-                <span>60FPS GSAP</span>
-              </span>
-              <span className="text-charcoal group-hover:translate-x-1 transition-transform">→</span>
-            </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     </section>
   );
