@@ -107,6 +107,21 @@ export const projects = [
 
 export const certifications = [
   {
+    id: "cert-wadhwani",
+    title: "Ignite Lite – Entrepreneurship & Tech Ideation",
+    issuer: "Wadhwani Foundation & Cor Jesu College",
+    category: "Professional & Tech",
+    year: "2026",
+    status: "Verified",
+    credentialId: "6a617733bf2abf176586bb60",
+    skills: ["Tech Ideation", "Business Modeling", "Financial Planning", "24h Coursework Training", "Cor Jesu College"],
+    description: "Certificate of Content Completion awarded for fulfilling all coursework and assessments in ideation, business modeling, and financial planning through Cor Jesu College, Incorporated.",
+    previewImage: "/certificates/wadhwani-foundation-preview.png",
+    pdfUrl: "/certificates/wadhwani-foundation-certificate.pdf",
+    verifyUrl: "/certificates/wadhwani-foundation-certificate.pdf",
+    isFeatured: true
+  },
+  {
     id: "cert-1",
     title: "Google Cybersecurity Professional Certificate",
     issuer: "Google / Coursera",
@@ -165,18 +180,6 @@ export const certifications = [
     skills: ["React", "JavaScript ES6+", "Version Control / Git", "UI/UX & Accessibility"],
     description: "Comprehensive front-end engineering program covering modern React state patterns, responsive styling, and web accessibility standards.",
     verifyUrl: "https://coursera.org"
-  },
-  {
-    id: "cert-6",
-    title: "Foundations of Game Physics & Interactive Scripting",
-    issuer: "Unity Academic / Creative Study",
-    category: "Web & Dev",
-    year: "2025",
-    status: "Verified",
-    credentialId: "GAME-DEV-3341",
-    skills: ["2D Physics", "Collision Vectors", "State Machines", "Game Loops"],
-    description: "Technical principles of real-time physics engines, inertia kinematics, hitboxes, and tactile player-control mechanics.",
-    verifyUrl: "https://unity.com"
   }
 ];
 
