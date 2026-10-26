@@ -5,12 +5,15 @@ import { SplitText } from 'gsap/SplitText';
 gsap.registerPlugin(SplitText);
 
 const TRAIL_IMAGES = [
-  "/pfp.png",
-  "https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=600&q=80",
-  "https://images.unsplash.com/photo-1484480974693-6ca0a78fb36b?auto=format&fit=crop&w=600&q=80",
-  "https://images.unsplash.com/photo-1592210454359-9043f067919b?auto=format&fit=crop&w=600&q=80",
-  "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=600&q=80",
-  "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=600&q=80",
+  "/1.jpg",
+  "/2.jpg",
+  "/3.jpg",
+  "/4.jpg",
+  "/5.jpg",
+  "/6.jpg",
+  "/7.jpg",
+  "/8.jpg",
+  "/9.jpg",
 ];
 
 const MIN_SPACING = 105; // Ensures at least ~50% portion of cards remain visible
