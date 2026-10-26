@@ -105,6 +105,81 @@ export const projects = [
   }
 ];
 
+export const certifications = [
+  {
+    id: "cert-1",
+    title: "Google Cybersecurity Professional Certificate",
+    issuer: "Google / Coursera",
+    category: "Cybersecurity",
+    year: "2025",
+    status: "Verified",
+    credentialId: "GCC-SEC-994201",
+    skills: ["SIEM Tools", "Network Defense", "Linux CLI", "Incident Response", "Python"],
+    description: "Hands-on training in threat identification, vulnerability mitigation, intrusion detection systems (IDS), and enterprise security response operations.",
+    verifyUrl: "https://coursera.org"
+  },
+  {
+    id: "cert-2",
+    title: "Cisco Networking & Endpoint Defense",
+    issuer: "Cisco Networking Academy",
+    category: "Networking",
+    year: "2025",
+    status: "Completed",
+    credentialId: "CSCO-NET-771804",
+    skills: ["Packet Analysis", "Firewall Rules", "TCP/IP Protocols", "Subnetting"],
+    description: "In-depth study of computer network architectures, packet-level traffic inspection, and perimeter firewall security configurations.",
+    verifyUrl: "https://www.netacad.com"
+  },
+  {
+    id: "cert-3",
+    title: "DICT Philippine Cybersecurity Awareness",
+    issuer: "Department of Information and Communications Technology",
+    category: "Cybersecurity",
+    year: "2024",
+    status: "Completed",
+    credentialId: "DICT-SEC-2024-PH",
+    skills: ["National Cyber Plan", "Threat Intelligence", "Phishing Defense", "Data Privacy"],
+    description: "Certification covering regional cybersecurity compliance, ethical standards, social engineering mitigation, and critical infrastructure protection.",
+    verifyUrl: "https://dict.gov.ph"
+  },
+  {
+    id: "cert-4",
+    title: "ISC² Certified in Cybersecurity (CC) Candidate",
+    issuer: "ISC² International",
+    category: "Cybersecurity",
+    year: "2026",
+    status: "In Progress",
+    credentialId: "ISC2-CAND-8192",
+    skills: ["Access Controls", "Security Principles", "Disaster Recovery", "Cloud Basics"],
+    description: "Global foundation credential covering foundational security concepts, business continuity planning, and physical and logical access administration.",
+    verifyUrl: "https://www.isc2.org"
+  },
+  {
+    id: "cert-5",
+    title: "Meta Front-End Development Specialization",
+    issuer: "Meta / Coursera",
+    category: "Web & Dev",
+    year: "2024",
+    status: "Verified",
+    credentialId: "META-FE-551029",
+    skills: ["React", "JavaScript ES6+", "Version Control / Git", "UI/UX & Accessibility"],
+    description: "Comprehensive front-end engineering program covering modern React state patterns, responsive styling, and web accessibility standards.",
+    verifyUrl: "https://coursera.org"
+  },
+  {
+    id: "cert-6",
+    title: "Foundations of Game Physics & Interactive Scripting",
+    issuer: "Unity Academic / Creative Study",
+    category: "Web & Dev",
+    year: "2025",
+    status: "Verified",
+    credentialId: "GAME-DEV-3341",
+    skills: ["2D Physics", "Collision Vectors", "State Machines", "Game Loops"],
+    description: "Technical principles of real-time physics engines, inertia kinematics, hitboxes, and tactile player-control mechanics.",
+    verifyUrl: "https://unity.com"
+  }
+];
+
 export const labExperiments = [
   {
     id: "exp-1",

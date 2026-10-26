@@ -17,7 +17,7 @@ export default function Navbar() {
 
   const navLinks = [
     { label: 'Work', href: '#projects', badge: '03' },
-    { label: 'Lab', href: '#lab' },
+    { label: 'Certs', href: '#certifications' },
     { label: 'Studio', href: '#about' },
     { label: 'Services', href: '#services' },
   ];
