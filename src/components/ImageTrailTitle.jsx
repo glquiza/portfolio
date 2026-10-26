@@ -17,8 +17,8 @@ const TRAIL_IMAGES = [
 ];
 
 const MIN_SPACING = 105; // Ensures at least ~50% portion of cards remain visible
-const IDLE_DELAY_MS = 400; // Quicker trigger to start disappearance (down from 900ms)
-const LEAVE_DELAY_MS = 140; // Quicker trigger on mouse leave (down from 300ms)
+const IDLE_DELAY_MS = 400; // Quicker trigger to start disappearance
+const LEAVE_DELAY_MS = 140; // Quicker trigger on mouse leave
 const CARD_LIFESPAN_MS = 1000; // Natural lifespan before an individual portal starts closing
 
 export default function ImageTrailTitle({ title = "GL_Tensei", eyebrow = "Design. Development. Marketing." }) {
@@ -26,7 +26,7 @@ export default function ImageTrailTitle({ title = "GL_Tensei", eyebrow = "Design
   const headingRef = useRef(null);
   const trailContainerRef = useRef(null);
 
-  // Animated Orange Spotlight Refs (GPU 60fps tick)
+  // Animated Orange Spotlight Refs (GPU-accelerated tick)
   const spotlightTextRef = useRef(null);
   const glowCircleRef = useRef(null);
   const ringCircleRef = useRef(null);
@@ -82,24 +82,25 @@ export default function ImageTrailTitle({ title = "GL_Tensei", eyebrow = "Design
       }, '-=0.3');
     }
 
-    // 60FPS Physics Tick for the Animated Orange Spotlight Circle
+    // High-performance 60/120fps fluid physics ticker for the Orange Spotlight Circle
     const updateSpotlight = () => {
-      // Smooth lerp movement toward cursor
-      currentPos.current.x += (targetPos.current.x - currentPos.current.x) * 0.18;
-      currentPos.current.y += (targetPos.current.y - currentPos.current.y) * 0.18;
-      pulsePhase.current += 0.048;
+      // Silky smooth dampening lerp (0.12 gives a graceful magnetic float)
+      const easeFactor = 0.12;
+      currentPos.current.x += (targetPos.current.x - currentPos.current.x) * easeFactor;
+      currentPos.current.y += (targetPos.current.y - currentPos.current.y) * easeFactor;
+      pulsePhase.current += 0.038;
 
-      // Dynamic breathing radius: organic pulse between 128px and 152px
+      // Gentle organic breathing pulse between 132px and 150px
       const targetRadius = isHoveredRef.current 
-        ? 140 + Math.sin(pulsePhase.current) * 12 
+        ? 140 + Math.sin(pulsePhase.current) * 9 
         : 0;
-      currentRadiusRef.current += (targetRadius - currentRadiusRef.current) * 0.14;
+      currentRadiusRef.current += (targetRadius - currentRadiusRef.current) * 0.1;
 
-      const x = currentPos.current.x;
-      const y = currentPos.current.y;
-      const r = currentRadiusRef.current;
+      const x = Math.round(currentPos.current.x * 10) / 10;
+      const y = Math.round(currentPos.current.y * 10) / 10;
+      const r = Math.round(currentRadiusRef.current * 10) / 10;
 
-      // 1. Update text clip-path to follow the animated breathing circle
+      // 1. Fluid clip-path on the orange gradient text layer
       if (spotlightTextRef.current) {
         spotlightTextRef.current.style.clipPath = r > 0.5 
           ? `circle(${r}px at ${x}px ${y}px)` 
@@ -107,18 +108,18 @@ export default function ImageTrailTitle({ title = "GL_Tensei", eyebrow = "Design
         spotlightTextRef.current.style.opacity = r > 1 ? '1' : '0';
       }
 
-      // 2. Update the soft glowing orange ambient aura
+      // 2. Soft ambient orange halo aura following smoothly
       if (glowCircleRef.current) {
-        const scaleVal = r / 140;
+        const scaleVal = Math.max(0, r / 140);
         glowCircleRef.current.style.transform = `translate3d(${x}px, ${y}px, 0) translate(-50%, -50%) scale(${scaleVal})`;
         glowCircleRef.current.style.opacity = isHoveredRef.current && r > 2 ? '0.85' : '0';
       }
 
-      // 3. Update the decorative concentric dashed ring
+      // 3. Delicate concentric rotating ring following smoothly
       if (ringCircleRef.current) {
-        const scaleVal = r / 140;
+        const scaleVal = Math.max(0, r / 140);
         ringCircleRef.current.style.transform = `translate3d(${x}px, ${y}px, 0) translate(-50%, -50%) scale(${scaleVal})`;
-        ringCircleRef.current.style.opacity = isHoveredRef.current && r > 2 ? '0.65' : '0';
+        ringCircleRef.current.style.opacity = isHoveredRef.current && r > 2 ? '0.6' : '0';
       }
     };
 
@@ -138,28 +139,27 @@ export default function ImageTrailTitle({ title = "GL_Tensei", eyebrow = "Design
     };
   }, []);
 
-  // Smooth, Slow & Long-Lasting Portal Entrance Animation
+  // Silky Smooth Portal Entrance Animation
   const openPortal = (img, finalRot) => {
-    gsap.set(img, {
-      clipPath: 'circle(0% at 50% 50%)',
-      scale: 0.15,
-      rotateZ: finalRot - (finalRot >= 0 ? 30 : -30),
-      opacity: 0,
-      filter: 'brightness(1.6) contrast(1.15) blur(8px)',
-    });
-
-    gsap.to(img, {
-      clipPath: 'circle(85% at 50% 50%)',
-      scale: 1,
-      rotateZ: finalRot,
-      opacity: 1,
-      filter: 'brightness(1) contrast(1) blur(0px)',
-      duration: 0.95, // Slower, graceful portal opening
-      ease: 'power2.out',
-    });
+    gsap.fromTo(img,
+      {
+        clipPath: 'circle(0% at 50% 50%)',
+        scale: 0.18,
+        rotateZ: finalRot - (finalRot >= 0 ? 18 : -18),
+        opacity: 0,
+      },
+      {
+        clipPath: 'circle(85% at 50% 50%)',
+        scale: 1,
+        rotateZ: finalRot,
+        opacity: 1,
+        duration: 0.85,
+        ease: 'power3.out',
+      }
+    );
   };
 
-  // Smooth, Slow & Long-Lasting Portal Exit Animation
+  // Silky Smooth Portal Exit Animation
   const closePortal = (item, onComplete, delay = 0) => {
     const { element, rot } = item;
     if (!element) return;
@@ -171,13 +171,12 @@ export default function ImageTrailTitle({ title = "GL_Tensei", eyebrow = "Design
 
     gsap.to(element, {
       clipPath: 'circle(0% at 50% 50%)',
-      scale: 0.12,
-      rotateZ: rot + (rot >= 0 ? 30 : -30),
+      scale: 0.18,
+      rotateZ: rot + (rot >= 0 ? 18 : -18),
       opacity: 0,
-      filter: 'brightness(1.8) contrast(1.2) blur(6px)',
-      duration: 0.75, // Slower, graceful vortex contraction
+      duration: 0.65,
       delay,
-      ease: 'power2.inOut',
+      ease: 'power3.inOut',
       onComplete,
     });
   };
@@ -190,7 +189,7 @@ export default function ImageTrailTitle({ title = "GL_Tensei", eyebrow = "Design
     activeImages.current = [];
 
     cardsToDismiss.forEach((item, index) => {
-      const staggerDelay = index * 0.08;
+      const staggerDelay = index * 0.07;
       closePortal(item, () => {
         if (item.element && item.element.parentNode) {
           item.element.parentNode.removeChild(item.element);
@@ -252,7 +251,7 @@ export default function ImageTrailTitle({ title = "GL_Tensei", eyebrow = "Design
     const titleCenterY = headingRect 
       ? headingRect.top + headingRect.height / 2 
       : e.clientY;
-    const cardY = titleCenterY + (Math.random() - 0.5) * 14;
+    const cardY = titleCenterY + (Math.random() - 0.5) * 12;
 
     // Cycle image source
     const imgSrc = TRAIL_IMAGES[imgIndex.current];
@@ -265,7 +264,7 @@ export default function ImageTrailTitle({ title = "GL_Tensei", eyebrow = "Design
     const img = document.createElement('img');
     img.src = imgSrc;
     img.alt = 'Portal Preview';
-    img.className = 'fixed pointer-events-none object-cover rounded-2xl shadow-[0_0_35px_rgba(217,119,70,0.35),0_20px_50px_rgba(0,0,0,0.45)] border-2 border-white/95 select-none w-44 h-60 sm:w-52 sm:h-72 md:w-60 md:h-80 will-change-transform';
+    img.className = 'fixed pointer-events-none object-cover rounded-2xl shadow-[0_0_35px_rgba(217,119,70,0.3),0_20px_50px_rgba(0,0,0,0.4)] border-2 border-white/95 select-none w-44 h-60 sm:w-52 sm:h-72 md:w-60 md:h-80 will-change-transform';
     
     // Position centered on cursor X and title baseline Y
     img.style.left = `${currentX}px`;
@@ -275,10 +274,10 @@ export default function ImageTrailTitle({ title = "GL_Tensei", eyebrow = "Design
 
     trailContainerRef.current.appendChild(img);
 
-    // Natural editorial tilt between -8 and +8 degrees
-    const finalRot = (Math.random() - 0.5) * 16;
+    // Natural editorial tilt between -7 and +7 degrees
+    const finalRot = (Math.random() - 0.5) * 14;
 
-    // Open portal animation (lasts longer, slow and smooth)
+    // Open portal animation (silky smooth power3.out)
     openPortal(img, finalRot);
 
     const cardItem = {
@@ -374,8 +373,7 @@ export default function ImageTrailTitle({ title = "GL_Tensei", eyebrow = "Design
           style={{
             width: '280px',
             height: '280px',
-            background: 'radial-gradient(circle, rgba(217,119,70,0.45) 0%, rgba(245,158,11,0.25) 42%, rgba(217,119,70,0.08) 65%, transparent 75%)',
-            filter: 'blur(16px)',
+            background: 'radial-gradient(circle, rgba(217,119,70,0.35) 0%, rgba(245,158,11,0.2) 38%, rgba(217,119,70,0.05) 60%, transparent 72%)',
             opacity: 0,
             transform: 'translate(-50%, -50%) scale(0)',
           }}
@@ -384,14 +382,17 @@ export default function ImageTrailTitle({ title = "GL_Tensei", eyebrow = "Design
         {/* Animated Concentric Pulsing Ring: Delicate rotating dashed orbit (z-35) */}
         <div 
           ref={ringCircleRef}
-          className="pointer-events-none absolute top-0 left-0 rounded-full border border-dashed border-terracotta/40 z-30 will-change-transform transition-opacity duration-300 animate-spin-slow"
+          className="pointer-events-none absolute top-0 left-0 z-30 will-change-transform transition-opacity duration-300"
           style={{
             width: '260px',
             height: '260px',
             opacity: 0,
             transform: 'translate(-50%, -50%) scale(0)',
           }}
-        />
+        >
+          {/* Inner isolated element rotates without CSS-transform collision */}
+          <div className="w-full h-full rounded-full border border-dashed border-terracotta/40 animate-spin-slow" />
+        </div>
 
         {/* Base Layer: Solid, 100% visible charcoal text that NEVER disappears */}
         <h1 
