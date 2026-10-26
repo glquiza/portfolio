@@ -31,7 +31,7 @@ export const personalInfo = {
   ],
   contact: {
     email: "garyalquiza@g.cjc.edu.ph",
-    github: "https://github.com",
+    github: "https://github.com/glquiza",
     linkedin: "https://linkedin.com",
   }
 };
@@ -73,7 +73,7 @@ export const projects = [
     description: "Real-time threat telemetry scanner and incident response simulator. Built with React and GSAP, featuring rotating radar sweeps, dynamic threat filtering, and defensive countermeasure pulses.",
     tech: ["React", "GSAP Timelines", "SVG Optics", "Tailwind CSS", "Security SOC"],
     image: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=1200&q=80",
-    githubUrl: "https://github.com",
+    githubUrl: "https://github.com/glquiza/portfolio/blob/main/src/components/miniprojects/CyberThreatMatrix.jsx",
     liveUrl: "#project-1",
     demoType: "cyber"
   },
@@ -86,7 +86,7 @@ export const projects = [
     description: "Interactive 2D kinetic arcade simulator exploring game physics. Features real-time gravity tuning (Earth, Moon, Zero-G, Invert), restitution bounciness sliders, particle collisions, and Web Audio retro synthesis.",
     tech: ["React", "Canvas 2D", "GSAP Motion", "Web Audio API", "Physics Math"],
     image: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=1200&q=80",
-    githubUrl: "https://github.com",
+    githubUrl: "https://github.com/glquiza/portfolio/blob/main/src/components/miniprojects/RetroPhysicsLab.jsx",
     liveUrl: "#project-2",
     demoType: "physics"
   },
@@ -99,7 +99,7 @@ export const projects = [
     description: "Tactile acoustic studio visualizer blending guitar power chords, analog synth leads, and reactive SVG waveforms. Features real-time BPM tempo pulsing, spatial reverb controls, and automated arpeggio sequencing.",
     tech: ["React", "Web Audio API", "GSAP SVG Morphing", "BPM Engine", "Tailwind CSS"],
     image: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=1200&q=80",
-    githubUrl: "https://github.com",
+    githubUrl: "https://github.com/glquiza/portfolio/blob/main/src/components/miniprojects/KineticAudioStudio.jsx",
     liveUrl: "#project-3",
     demoType: "audio"
   }
