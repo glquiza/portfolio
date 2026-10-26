@@ -4,14 +4,14 @@ export const personalInfo = {
   studioName: "GL_Tensei Studio",
   eyebrow: "Design. Development. Marketing.",
   headline: "GL_Tensei",
-  tagline: "Independent front-end developer and digital creator crafting bespoke, high-performance web experiences with React, GSAP, and modern web standards.",
+  tagline: "IT student and aspiring Cybersecurity Analyst exploring web development, game development, and UI/UX design while building creative digital experiences.",
   avatar: "/pfp.png",
   location: "Davao del Sur, Philippines",
   timezone: "GMT+8 (PHT)",
   availability: "Available for Q1/Q2 Projects & Roles",
   bio: [
-    "I am an independent front-end developer and creative technologist focused on the intersection of aesthetic design, motion engineering, and strict web performance standards.",
-    "Rooted in modern React architecture and GSAP interaction design, I build digital experiences that feel tangible, smooth, and memorable. Every animation is intentional—crafted to elevate storytelling rather than decorate."
+    "I am an IT student and aspiring Cybersecurity Analyst passionate about exploring web development, game development, and UI/UX design.",
+    "Driven by curiosity and a commitment to modern web standards, I focus on building intuitive, secure, and performant user interfaces with interactive motion and clean component architecture."
   ],
   stats: [
     { label: "Selected Works", value: "03+" },
@@ -20,14 +20,14 @@ export const personalInfo = {
     { label: "Base Timezone", value: "GMT+8" },
   ],
   skills: [
+    "Cybersecurity Fundamentals",
     "React 19 & Vite",
     "GSAP ScrollTrigger",
-    "Motion Choreography",
+    "UI/UX Design",
+    "Game Dev Explorations",
     "Tailwind CSS",
     "JavaScript ES6+",
-    "Responsive Architecture",
-    "Web Accessibility (a11y)",
-    "Git & GitHub Workflow"
+    "Responsive Architecture"
   ],
   contact: {
     email: "garyalquiza@g.cjc.edu.ph",
