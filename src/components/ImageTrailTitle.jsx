@@ -26,8 +26,18 @@ export default function ImageTrailTitle({ title = "GL_Tensei", eyebrow = "Design
   const headingRef = useRef(null);
   const trailContainerRef = useRef(null);
 
+  // Animated Orange Spotlight Refs (GPU 60fps tick)
+  const spotlightTextRef = useRef(null);
+  const glowCircleRef = useRef(null);
+  const ringCircleRef = useRef(null);
+
   const [isHovered, setIsHovered] = useState(false);
-  const [spotlightPos, setSpotlightPos] = useState({ x: -999, y: -999 });
+  const isHoveredRef = useRef(false);
+
+  const targetPos = useRef({ x: 0, y: 0 });
+  const currentPos = useRef({ x: 0, y: 0 });
+  const pulsePhase = useRef(0);
+  const currentRadiusRef = useRef(0);
 
   const lastPos = useRef({ x: -999, y: -999 });
   const imgIndex = useRef(0);
@@ -72,7 +82,50 @@ export default function ImageTrailTitle({ title = "GL_Tensei", eyebrow = "Design
       }, '-=0.3');
     }
 
+    // 60FPS Physics Tick for the Animated Orange Spotlight Circle
+    const updateSpotlight = () => {
+      // Smooth lerp movement toward cursor
+      currentPos.current.x += (targetPos.current.x - currentPos.current.x) * 0.18;
+      currentPos.current.y += (targetPos.current.y - currentPos.current.y) * 0.18;
+      pulsePhase.current += 0.048;
+
+      // Dynamic breathing radius: organic pulse between 128px and 152px
+      const targetRadius = isHoveredRef.current 
+        ? 140 + Math.sin(pulsePhase.current) * 12 
+        : 0;
+      currentRadiusRef.current += (targetRadius - currentRadiusRef.current) * 0.14;
+
+      const x = currentPos.current.x;
+      const y = currentPos.current.y;
+      const r = currentRadiusRef.current;
+
+      // 1. Update text clip-path to follow the animated breathing circle
+      if (spotlightTextRef.current) {
+        spotlightTextRef.current.style.clipPath = r > 0.5 
+          ? `circle(${r}px at ${x}px ${y}px)` 
+          : 'circle(0px at 0px 0px)';
+        spotlightTextRef.current.style.opacity = r > 1 ? '1' : '0';
+      }
+
+      // 2. Update the soft glowing orange ambient aura
+      if (glowCircleRef.current) {
+        const scaleVal = r / 140;
+        glowCircleRef.current.style.transform = `translate3d(${x}px, ${y}px, 0) translate(-50%, -50%) scale(${scaleVal})`;
+        glowCircleRef.current.style.opacity = isHoveredRef.current && r > 2 ? '0.85' : '0';
+      }
+
+      // 3. Update the decorative concentric dashed ring
+      if (ringCircleRef.current) {
+        const scaleVal = r / 140;
+        ringCircleRef.current.style.transform = `translate3d(${x}px, ${y}px, 0) translate(-50%, -50%) scale(${scaleVal})`;
+        ringCircleRef.current.style.opacity = isHoveredRef.current && r > 2 ? '0.65' : '0';
+      }
+    };
+
+    gsap.ticker.add(updateSpotlight);
+
     return () => {
+      gsap.ticker.remove(updateSpotlight);
       clearTimeout(idleTimer.current);
       clearTimeout(leaveTimer.current);
       activeImages.current.forEach((item) => {
@@ -156,17 +209,22 @@ export default function ImageTrailTitle({ title = "GL_Tensei", eyebrow = "Design
       leaveTimer.current = null;
     }
 
-    if (!isHovered) {
+    if (!isHoveredRef.current) {
+      isHoveredRef.current = true;
       setIsHovered(true);
     }
 
-    // Update localized spotlight position relative to the heading
+    // Update target coordinates relative to the heading container
     const headingRect = headingRef.current?.getBoundingClientRect();
     if (headingRect) {
-      setSpotlightPos({
-        x: e.clientX - headingRect.left,
-        y: e.clientY - headingRect.top,
-      });
+      const relX = e.clientX - headingRect.left;
+      const relY = e.clientY - headingRect.top;
+      targetPos.current = { x: relX, y: relY };
+
+      // Snap immediately if entering for the first time
+      if (currentRadiusRef.current < 2) {
+        currentPos.current = { x: relX, y: relY };
+      }
     }
 
     const currentX = e.clientX;
@@ -263,6 +321,7 @@ export default function ImageTrailTitle({ title = "GL_Tensei", eyebrow = "Design
     clearTimeout(idleTimer.current);
     idleTimer.current = setTimeout(() => {
       dismissAllPortals();
+      isHoveredRef.current = false;
       setIsHovered(false);
     }, IDLE_DELAY_MS);
   };
@@ -272,6 +331,7 @@ export default function ImageTrailTitle({ title = "GL_Tensei", eyebrow = "Design
       clearTimeout(leaveTimer.current);
       leaveTimer.current = null;
     }
+    isHoveredRef.current = true;
     setIsHovered(true);
   };
 
@@ -280,6 +340,7 @@ export default function ImageTrailTitle({ title = "GL_Tensei", eyebrow = "Design
     clearTimeout(leaveTimer.current);
     leaveTimer.current = setTimeout(() => {
       dismissAllPortals();
+      isHoveredRef.current = false;
       setIsHovered(false);
     }, LEAVE_DELAY_MS);
   };
@@ -306,6 +367,32 @@ export default function ImageTrailTitle({ title = "GL_Tensei", eyebrow = "Design
       {/* Centered Big Title: GL_Tensei (z-40 so it is NEVER covered by portals) */}
       <div className="relative inline-block z-40">
         
+        {/* Animated Luminous Orange Ambient Aura: Follows cursor with breathing pulse (z-35) */}
+        <div 
+          ref={glowCircleRef}
+          className="pointer-events-none absolute top-0 left-0 rounded-full z-30 will-change-transform transition-opacity duration-300"
+          style={{
+            width: '280px',
+            height: '280px',
+            background: 'radial-gradient(circle, rgba(217,119,70,0.45) 0%, rgba(245,158,11,0.25) 42%, rgba(217,119,70,0.08) 65%, transparent 75%)',
+            filter: 'blur(16px)',
+            opacity: 0,
+            transform: 'translate(-50%, -50%) scale(0)',
+          }}
+        />
+
+        {/* Animated Concentric Pulsing Ring: Delicate rotating dashed orbit (z-35) */}
+        <div 
+          ref={ringCircleRef}
+          className="pointer-events-none absolute top-0 left-0 rounded-full border border-dashed border-terracotta/40 z-30 will-change-transform transition-opacity duration-300 animate-spin-slow"
+          style={{
+            width: '260px',
+            height: '260px',
+            opacity: 0,
+            transform: 'translate(-50%, -50%) scale(0)',
+          }}
+        />
+
         {/* Base Layer: Solid, 100% visible charcoal text that NEVER disappears */}
         <h1 
           ref={headingRef}
@@ -316,19 +403,18 @@ export default function ImageTrailTitle({ title = "GL_Tensei", eyebrow = "Design
           </span>
         </h1>
 
-        {/* Localized Spotlight Layer: Only the pointed part illuminates into vibrant gradient */}
+        {/* Animated Spotlight Layer: Text dynamically clipped to the breathing, lerping orange circle */}
         <div 
-          className="absolute inset-0 font-display font-extrabold tracking-tighter text-6xl sm:text-8xl md:text-9xl lg:text-[10rem] xl:text-[11.5rem] leading-[0.88] uppercase select-none text-center pointer-events-none z-40"
+          ref={spotlightTextRef}
+          className="absolute inset-0 font-display font-extrabold tracking-tighter text-6xl sm:text-8xl md:text-9xl lg:text-[10rem] xl:text-[11.5rem] leading-[0.88] uppercase select-none text-center pointer-events-none z-40 will-change-transform transition-opacity duration-200"
           style={{
-            opacity: isHovered ? 1 : 0,
+            opacity: 0,
             background: 'linear-gradient(135deg, #D97746 0%, #FF8A50 25%, #F59E0B 50%, #FF6B4A 75%, #D97746 100%)',
             backgroundSize: '200% 200%',
+            animation: 'titleGradientShift 3.5s ease infinite',
             WebkitBackgroundClip: 'text',
             WebkitTextFillColor: 'transparent',
-            clipPath: isHovered 
-              ? `circle(140px at ${spotlightPos.x}px ${spotlightPos.y}px)` 
-              : 'circle(0px at 0px 0px)',
-            transition: 'clip-path 0.12s ease-out, opacity 0.35s ease-out',
+            clipPath: 'circle(0px at 0px 0px)',
           }}
           aria-hidden="true"
         >

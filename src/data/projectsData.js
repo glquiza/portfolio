@@ -70,7 +70,7 @@ export const projects = [
     title: "Coming Soon",
     category: "Coming Soon",
     year: "Coming Soon",
-    description: "oming Soon",
+    description: "Coming Soon",
     tech: ["React", "GSAP ScrollTrigger", "Tailwind CSS"],
     image: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=1200&q=80",
     githubUrl: "https://github.com",
