@@ -14,8 +14,9 @@ const TRAIL_IMAGES = [
 ];
 
 const MIN_SPACING = 105; // Ensures at least ~50% portion of cards remain visible
-const IDLE_DELAY_MS = 900; // Linger delay before idle disappearance starts
-const LEAVE_DELAY_MS = 300; // Grace delay on mouse leave
+const IDLE_DELAY_MS = 400; // Quicker trigger to start disappearance (down from 900ms)
+const LEAVE_DELAY_MS = 140; // Quicker trigger on mouse leave (down from 300ms)
+const CARD_LIFESPAN_MS = 1000; // Natural lifespan before an individual portal starts closing
 
 export default function ImageTrailTitle({ title = "GL_Tensei", eyebrow = "Design. Development. Marketing." }) {
   const containerRef = useRef(null);
@@ -72,6 +73,7 @@ export default function ImageTrailTitle({ title = "GL_Tensei", eyebrow = "Design
       clearTimeout(idleTimer.current);
       clearTimeout(leaveTimer.current);
       activeImages.current.forEach((item) => {
+        if (item.lifespanTimer) clearTimeout(item.lifespanTimer);
         if (item.element && item.element.parentNode) {
           item.element.parentNode.removeChild(item.element);
         }
@@ -80,14 +82,14 @@ export default function ImageTrailTitle({ title = "GL_Tensei", eyebrow = "Design
     };
   }, []);
 
-  // Smooth Portal Entrance Animation
+  // Smooth, Slow & Long-Lasting Portal Entrance Animation
   const openPortal = (img, finalRot) => {
     gsap.set(img, {
       clipPath: 'circle(0% at 50% 50%)',
       scale: 0.15,
-      rotateZ: finalRot - (finalRot >= 0 ? 25 : -25),
+      rotateZ: finalRot - (finalRot >= 0 ? 30 : -30),
       opacity: 0,
-      filter: 'brightness(1.8) contrast(1.2) blur(8px)',
+      filter: 'brightness(1.6) contrast(1.15) blur(8px)',
     });
 
     gsap.to(img, {
@@ -96,30 +98,35 @@ export default function ImageTrailTitle({ title = "GL_Tensei", eyebrow = "Design
       rotateZ: finalRot,
       opacity: 1,
       filter: 'brightness(1) contrast(1) blur(0px)',
-      duration: 0.52,
-      ease: 'power3.out',
+      duration: 0.95, // Slower, graceful portal opening
+      ease: 'power2.out',
     });
   };
 
-  // Smooth Portal Exit Animation (Snappy & Vortex-like)
+  // Smooth, Slow & Long-Lasting Portal Exit Animation
   const closePortal = (item, onComplete, delay = 0) => {
     const { element, rot } = item;
     if (!element) return;
 
+    if (item.lifespanTimer) {
+      clearTimeout(item.lifespanTimer);
+      item.lifespanTimer = null;
+    }
+
     gsap.to(element, {
       clipPath: 'circle(0% at 50% 50%)',
       scale: 0.12,
-      rotateZ: rot + (rot >= 0 ? 25 : -25),
+      rotateZ: rot + (rot >= 0 ? 30 : -30),
       opacity: 0,
-      filter: 'brightness(2) contrast(1.3) blur(6px)',
-      duration: 0.28,
+      filter: 'brightness(1.8) contrast(1.2) blur(6px)',
+      duration: 0.75, // Slower, graceful vortex contraction
       delay,
-      ease: 'power3.in',
+      ease: 'power2.inOut',
       onComplete,
     });
   };
 
-  // Dismiss all active portals with a rapid staggered wave
+  // Dismiss all active portals with a graceful staggered wave
   const dismissAllPortals = () => {
     if (activeImages.current.length === 0) return;
 
@@ -127,7 +134,7 @@ export default function ImageTrailTitle({ title = "GL_Tensei", eyebrow = "Design
     activeImages.current = [];
 
     cardsToDismiss.forEach((item, index) => {
-      const staggerDelay = index * 0.04;
+      const staggerDelay = index * 0.08;
       closePortal(item, () => {
         if (item.element && item.element.parentNode) {
           item.element.parentNode.removeChild(item.element);
@@ -210,7 +217,7 @@ export default function ImageTrailTitle({ title = "GL_Tensei", eyebrow = "Design
     // Natural editorial tilt between -8 and +8 degrees
     const finalRot = (Math.random() - 0.5) * 16;
 
-    // Open portal animation
+    // Open portal animation (lasts longer, slow and smooth)
     openPortal(img, finalRot);
 
     const cardItem = {
@@ -218,11 +225,25 @@ export default function ImageTrailTitle({ title = "GL_Tensei", eyebrow = "Design
       x: currentX,
       y: cardY,
       rot: finalRot,
+      lifespanTimer: null,
     };
+
+    // Auto-schedule closing for older cards to keep the portal flow organic
+    cardItem.lifespanTimer = setTimeout(() => {
+      const idx = activeImages.current.findIndex(i => i === cardItem);
+      if (idx !== -1) {
+        activeImages.current.splice(idx, 1);
+        closePortal(cardItem, () => {
+          if (cardItem.element && cardItem.element.parentNode) {
+            cardItem.element.parentNode.removeChild(cardItem.element);
+          }
+        });
+      }
+    }, CARD_LIFESPAN_MS);
 
     activeImages.current.push(cardItem);
 
-    // Keep max active portals to 6 for clean aesthetics
+    // Keep max active portals to 6 for clean visual balance
     if (activeImages.current.length > 6) {
       const oldest = activeImages.current.shift();
       closePortal(oldest, () => {
@@ -304,7 +325,7 @@ export default function ImageTrailTitle({ title = "GL_Tensei", eyebrow = "Design
             clipPath: isHovered 
               ? `circle(140px at ${spotlightPos.x}px ${spotlightPos.y}px)` 
               : 'circle(0px at 0px 0px)',
-            transition: 'clip-path 0.08s ease-out, opacity 0.25s ease-out',
+            transition: 'clip-path 0.12s ease-out, opacity 0.35s ease-out',
           }}
           aria-hidden="true"
         >
