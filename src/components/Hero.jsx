@@ -1,55 +1,19 @@
 import React, { useRef } from 'react';
 import { ArrowDownRight, ArrowUpRight, ArrowDown } from 'lucide-react';
+import ImageTrailTitle from './ImageTrailTitle';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { SplitText } from 'gsap/SplitText';
 import { useGSAP } from '@gsap/react';
 import { personalInfo } from '../data/projectsData';
 
-gsap.registerPlugin(ScrollTrigger, SplitText);
+gsap.registerPlugin(ScrollTrigger);
 
 export default function Hero() {
   const containerRef = useRef(null);
   const floatingImageRef = useRef(null);
-  const headingRef = useRef(null);
 
   useGSAP(() => {
     const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
-
-    // GSAP SplitText line and word reveal
-    try {
-      const split = new SplitText(headingRef.current, {
-        type: 'lines,words,chars',
-        linesClass: 'overflow-hidden leading-none',
-      });
-
-      tl.from('.hero-eyebrow', {
-        opacity: 0,
-        y: -15,
-        duration: 0.6,
-        ease: 'power3.out',
-      })
-      .from(split.chars || split.words, {
-        yPercent: 110,
-        opacity: 0,
-        stagger: 0.03,
-        duration: 1,
-        ease: 'power4.out',
-      }, '-=0.4');
-    } catch (e) {
-      // Graceful fallback if SplitText encounters DOM restrictions
-      tl.from('.hero-eyebrow', {
-        opacity: 0,
-        y: -15,
-        duration: 0.6,
-      })
-      .from('.hero-line-reveal', {
-        opacity: 0,
-        y: 40,
-        duration: 0.9,
-        stagger: 0.12,
-      }, '-=0.3');
-    }
 
     // Staggered metadata and CTAs
     tl.from('.hero-meta-tag', {
@@ -57,12 +21,12 @@ export default function Hero() {
       y: -15,
       duration: 0.6,
       stagger: 0.08,
-    }, '-=0.8')
+    })
     .from('.hero-description', {
       opacity: 0,
       y: 20,
       duration: 0.7,
-    }, '-=0.6')
+    }, '-=0.4')
     .from('.hero-cta-btn', {
       opacity: 0,
       y: 15,
@@ -145,23 +109,11 @@ export default function Hero() {
           </div>
         </div>
 
-        {/* Main Headline with SplitText Mask (Centered) */}
-        <div className="space-y-4 mb-16 text-center flex flex-col items-center justify-center">
-          {/* Centered text on top without dash */}
-          <div className="hero-eyebrow font-mono text-xs sm:text-sm md:text-base uppercase tracking-[0.26em] text-terracotta font-semibold text-center">
-            Design. Development. Marketing.
-          </div>
-
-          {/* Centered Big Title: GL_Tensei */}
-          <h1 
-            ref={headingRef}
-            className="font-display font-extrabold tracking-tighter text-charcoal text-6xl sm:text-8xl md:text-9xl lg:text-[10rem] xl:text-[11.5rem] leading-[0.88] uppercase select-none text-center"
-          >
-            <span className="hero-line-reveal block text-center">
-              GL_Tensei
-            </span>
-          </h1>
-        </div>
+        {/* Interactive Mouse Hover Image Trail Title & Eyebrow */}
+        <ImageTrailTitle 
+          title={personalInfo.brandTitle || "GL_Tensei"} 
+          eyebrow={personalInfo.eyebrow || "Design. Development. Marketing."} 
+        />
 
         {/* Two-Column Layout: Narrative & Scroll-Reactive Floating Visual Composition */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-end pt-4">
