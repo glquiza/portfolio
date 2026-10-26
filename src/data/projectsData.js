@@ -67,38 +67,41 @@ export const projects = [
   {
     id: "project-1",
     index: "01",
-    title: "Coming Soon",
-    category: "Coming Soon",
-    year: "Coming Soon",
-    description: "Coming Soon",
-    tech: ["React", "GSAP ScrollTrigger", "Tailwind CSS"],
-    image: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=1200&q=80",
+    title: "CyberMatrix: Threat Radar",
+    category: "Cybersecurity & Threat Telemetry",
+    year: "2026",
+    description: "Real-time threat telemetry scanner and incident response simulator. Built with React and GSAP, featuring rotating radar sweeps, dynamic threat filtering, and defensive countermeasure pulses.",
+    tech: ["React", "GSAP Timelines", "SVG Optics", "Tailwind CSS", "Security SOC"],
+    image: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=1200&q=80",
     githubUrl: "https://github.com",
-    liveUrl: "https://react.dev"
+    liveUrl: "#project-1",
+    demoType: "cyber"
   },
   {
     id: "project-2",
     index: "02",
-    title: "Coming Soon",
-    category: "Coming Soon",
-    year: "Coming Soon",
-    description: "Coming Soon",
-    tech: ["React", "React Router", "Tailwind CSS", "GSAP"],
-    image: "https://images.unsplash.com/photo-1484480974693-6ca0a78fb36b?auto=format&fit=crop&w=1200&q=80",
+    title: "PixelForge: 2D Physics Lab",
+    category: "Game Development & Motion Physics",
+    year: "2026",
+    description: "Interactive 2D kinetic arcade simulator exploring game physics. Features real-time gravity tuning (Earth, Moon, Zero-G, Invert), restitution bounciness sliders, particle collisions, and Web Audio retro synthesis.",
+    tech: ["React", "Canvas 2D", "GSAP Motion", "Web Audio API", "Physics Math"],
+    image: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=1200&q=80",
     githubUrl: "https://github.com",
-    liveUrl: "https://vitejs.dev"
+    liveUrl: "#project-2",
+    demoType: "physics"
   },
   {
     id: "project-3",
     index: "03",
-    title: "Coming Soon",
-    category: "Coming Soon",
-    year: "Coming Soon",
-    description: "Coming Soon",
-    tech: ["React", "Tailwind CSS", "REST API", "GSAP Flip"],
-    image: "https://images.unsplash.com/photo-1592210454359-9043f067919b?auto=format&fit=crop&w=1200&q=80",
+    title: "RiffWave: Kinetic Audio Canvas",
+    category: "Web Audio & Creative UI/UX",
+    year: "2026",
+    description: "Tactile acoustic studio visualizer blending guitar power chords, analog synth leads, and reactive SVG waveforms. Features real-time BPM tempo pulsing, spatial reverb controls, and automated arpeggio sequencing.",
+    tech: ["React", "Web Audio API", "GSAP SVG Morphing", "BPM Engine", "Tailwind CSS"],
+    image: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=1200&q=80",
     githubUrl: "https://github.com",
-    liveUrl: "https://tailwindcss.com"
+    liveUrl: "#project-3",
+    demoType: "audio"
   }
 ];
 

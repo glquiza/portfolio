@@ -99,14 +99,13 @@ export default function ProjectCard({ project, index, onInspect }) {
 
               <span className="text-black/[0.2] font-mono">•</span>
 
-              <a
-                href={liveUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-xs font-mono uppercase tracking-widest text-charcoal-muted hover:text-charcoal underline underline-offset-4 transition-colors"
+              <button
+                onClick={() => onInspect && onInspect(project)}
+                className="text-xs font-mono uppercase tracking-widest text-terracotta hover:text-charcoal font-semibold underline underline-offset-4 transition-colors flex items-center gap-1"
+                aria-label={`Play interactive demo of ${title}`}
               >
-                Live demo ↗
-              </a>
+                <span>Play demo ⚡</span>
+              </button>
             </div>
 
             <a
