@@ -55,7 +55,7 @@ export default function LoadingScreen({ onComplete }) {
       <div ref={textRef} className="flex items-center justify-between font-mono text-xs text-charcoal-subtle uppercase tracking-widest">
         <div className="flex items-center gap-2">
           <span className="w-2 h-2 rounded-full bg-terracotta animate-pulse"></span>
-          <span className="text-charcoal font-semibold">{personalInfo.name}</span>
+          <span className="text-charcoal font-semibold">{personalInfo.brandTitle || personalInfo.name}</span>
         </div>
         <span>INITIALIZING STUDIO V1</span>
       </div>
@@ -67,7 +67,7 @@ export default function LoadingScreen({ onComplete }) {
           <span className="text-terracotta text-4xl sm:text-6xl font-mono ml-2">%</span>
         </div>
         <p className="font-mono text-xs text-charcoal-muted uppercase tracking-widest">
-          CREATIVE DEVELOPMENT & MOTION DESIGN
+          {personalInfo.eyebrow || 'Design. Development. Marketing.'}
         </p>
       </div>
 

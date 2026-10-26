@@ -45,7 +45,7 @@ export default function Navbar() {
           </div>
 
           <span className="font-display font-bold text-lg tracking-tight text-charcoal">
-            {personalInfo.name}
+            {personalInfo.brandTitle || personalInfo.name}
           </span>
         </a>
 
