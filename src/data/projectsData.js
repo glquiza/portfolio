@@ -6,12 +6,12 @@ export const personalInfo = {
   headline: "GL_Tensei",
   tagline: "IT student and aspiring Cybersecurity Analyst exploring web development, game development, and UI/UX design while building creative digital experiences.",
   avatar: "/pfp.png",
-  location: "Davao del Sur, Philippines",
+  location: "Digos City, Davao del Sur, Philippines",
   timezone: "GMT+8 (PHT)",
   availability: "Available for Q1/Q2 Projects & Roles",
   bio: [
-    "I am an IT student and aspiring Cybersecurity Analyst passionate about exploring web development, game development, and UI/UX design.",
-    "Driven by curiosity and a commitment to modern web standards, I focus on building intuitive, secure, and performant user interfaces with interactive motion and clean component architecture."
+    "Hey, I'm a passionate IT student who loves exploring the world of technology, building things, and turning ideas into reality. I'm currently pursuing a Bachelor of Science in Information Technology (BSIT) in Digos City, Davao del Sur, Philippines. As someone who is hardworking, humble, and curious, I enjoy learning new skills and challenging myself to grow. Right now, I'm exploring web development, game development, and UI/UX design, combining creativity and technology to create meaningful digital experiences.",
+    "When I'm away from my screen, you'll probably find me playing online games, creating YouTube videos, playing guitar, or going on adventures. I'm always looking for new things to explore and skills to develop. One of my biggest goals is to become a Cybersecurity Analyst, where I can use my technical knowledge and problem-solving skills to help protect people and systems in the digital world. For me, learning is a continuous journey, and this portfolio is a reflection of that journey."
   ],
   stats: [
     { label: "Selected Works", value: "03+" },

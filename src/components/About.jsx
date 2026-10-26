@@ -98,7 +98,7 @@ export default function About() {
             <div className="p-6 bg-[#F4F0EA] border border-black/[0.08] flex flex-col sm:flex-row sm:items-center justify-between gap-4 font-mono text-xs text-charcoal-subtle shadow-sm">
               <div className="flex items-center gap-2">
                 <MapPin className="w-4 h-4 text-emerald-600" />
-                <span className="text-charcoal font-medium">Davao del Sur, Philippines</span>
+                <span className="text-charcoal font-medium">{personalInfo.location}</span>
               </div>
               <div className="flex items-center gap-2">
                 <Globe className="w-4 h-4 text-terracotta" />
