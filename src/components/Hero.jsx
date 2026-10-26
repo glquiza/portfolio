@@ -108,6 +108,19 @@ export default function Hero() {
 
   }, { scope: containerRef });
 
+  const scrollToSection = (e, href) => {
+    e.preventDefault();
+    const target = document.querySelector(href);
+    if (target) {
+      const navOffset = 70;
+      const targetPos = target.getBoundingClientRect().top + window.scrollY - navOffset;
+      window.scrollTo({
+        top: targetPos,
+        behavior: 'smooth',
+      });
+    }
+  };
+
   return (
     <section 
       id="hero" 
@@ -162,6 +175,7 @@ export default function Hero() {
             <div className="flex flex-wrap items-center gap-4 pt-2">
               <a 
                 href="#projects"
+                onClick={(e) => scrollToSection(e, '#projects')}
                 className="hero-cta-btn group inline-flex items-center gap-3 px-7 py-4 rounded-none bg-terracotta text-white font-mono text-xs uppercase tracking-widest font-semibold hover:bg-terracotta-hover shadow-md shadow-terracotta/20 transition-all active:scale-[0.98]"
               >
                 <span>EXPLORE SELECTED WORK</span>
@@ -170,6 +184,7 @@ export default function Hero() {
 
               <a 
                 href="#contact"
+                onClick={(e) => scrollToSection(e, '#contact')}
                 className="hero-cta-btn inline-flex items-center gap-3 px-7 py-4 rounded-none bg-[#EDE8E0] border border-black/[0.08] hover:border-charcoal text-charcoal font-mono text-xs uppercase tracking-widest transition-all hover:bg-[#E5DFD5]"
               >
                 <span>CONTACT ME</span>

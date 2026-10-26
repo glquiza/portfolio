@@ -22,6 +22,21 @@ export default function Navbar() {
     { label: 'Services', href: '#services' },
   ];
 
+  // Smooth shortcut scroll handler that glides to section without trapping or hiding other sections
+  const scrollToSection = (e, href) => {
+    e.preventDefault();
+    setIsOpen(false);
+    const target = document.querySelector(href);
+    if (target) {
+      const navOffset = 70;
+      const targetPos = target.getBoundingClientRect().top + window.scrollY - navOffset;
+      window.scrollTo({
+        top: targetPos,
+        behavior: 'smooth',
+      });
+    }
+  };
+
   return (
     <header 
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
@@ -32,9 +47,10 @@ export default function Navbar() {
     >
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 flex items-center justify-between">
         
-        {/* Brand / Logo (matching reference header) */}
+        {/* Brand / Logo (Scrolls shortcut to top hero) */}
         <a 
           href="#hero" 
+          onClick={(e) => scrollToSection(e, '#hero')}
           className="group flex items-center gap-3 text-charcoal focus:outline-none"
         >
           {/* Studio geometric mark */}
@@ -49,12 +65,13 @@ export default function Navbar() {
           </span>
         </a>
 
-        {/* Desktop Navigation Links */}
+        {/* Desktop Navigation Links (Smooth shortcut jumps that stay 100% scrollable) */}
         <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-charcoal">
           {navLinks.map((link) => (
             <a 
               key={link.label}
               href={link.href} 
+              onClick={(e) => scrollToSection(e, link.href)}
               className="group relative py-1 text-charcoal-muted hover:text-charcoal transition-colors flex items-center gap-1.5"
             >
               <span>{link.label}</span>
@@ -89,9 +106,10 @@ export default function Navbar() {
             </a>
           </div>
 
-          {/* Signature Terracotta CTA Button (Matching Driezie Studio Screenshot) */}
+          {/* Signature Terracotta CTA Button (Scrolls shortcut to Contact section) */}
           <a
             href="#contact"
+            onClick={(e) => scrollToSection(e, '#contact')}
             className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-md bg-terracotta hover:bg-terracotta-hover text-white font-medium text-sm shadow-sm transition-all active:scale-95"
           >
             <span>Contact</span>
@@ -118,7 +136,7 @@ export default function Navbar() {
               <a 
                 key={link.label}
                 href={link.href} 
-                onClick={() => setIsOpen(false)}
+                onClick={(e) => scrollToSection(e, link.href)}
                 className="flex items-center justify-between py-3 border-b border-black/[0.06] text-lg font-display tracking-tight text-charcoal hover:text-terracotta"
               >
                 <span>{link.label}</span>
@@ -132,7 +150,7 @@ export default function Navbar() {
           <div className="pt-2">
             <a
               href="#contact"
-              onClick={() => setIsOpen(false)}
+              onClick={(e) => scrollToSection(e, '#contact')}
               className="w-full flex items-center justify-center gap-2 py-3.5 bg-terracotta text-white font-medium text-sm rounded shadow-sm"
             >
               <span>Contact Me</span>
