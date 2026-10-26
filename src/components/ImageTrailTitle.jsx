@@ -13,9 +13,9 @@ const TRAIL_IMAGES = [
   "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=600&q=80",
 ];
 
-const MIN_SPACING = 95; // Minimum horizontal distance between cards to guarantee ~50% visibility
-const IDLE_DELAY_MS = 950; // Linger delay before idle disappearance starts
-const LEAVE_DELAY_MS = 320; // Linger delay on mouse leave
+const MIN_SPACING = 105; // Ensures at least ~50% portion of cards remain visible
+const IDLE_DELAY_MS = 900; // Linger delay before idle disappearance starts
+const LEAVE_DELAY_MS = 300; // Grace delay on mouse leave
 
 export default function ImageTrailTitle({ title = "GL_Tensei", eyebrow = "Design. Development. Marketing." }) {
   const containerRef = useRef(null);
@@ -23,7 +23,7 @@ export default function ImageTrailTitle({ title = "GL_Tensei", eyebrow = "Design
   const trailContainerRef = useRef(null);
 
   const [isHovered, setIsHovered] = useState(false);
-  const [activeCount, setActiveCount] = useState(0);
+  const [spotlightPos, setSpotlightPos] = useState({ x: -999, y: -999 });
 
   const lastPos = useRef({ x: -999, y: -999 });
   const imgIndex = useRef(0);
@@ -31,7 +31,6 @@ export default function ImageTrailTitle({ title = "GL_Tensei", eyebrow = "Design
   const idleTimer = useRef(null);
   const leaveTimer = useRef(null);
   const activeImages = useRef([]);
-  const animStyleCounter = useRef(0);
 
   // GSAP Initial Entrance Timeline for Title & Eyebrow
   useEffect(() => {
@@ -81,168 +80,55 @@ export default function ImageTrailTitle({ title = "GL_Tensei", eyebrow = "Design
     };
   }, []);
 
-  // Dramatic In-Animation Dispatcher
-  const playEntranceAnimation = (img, inType, finalRot) => {
-    switch (inType) {
-      case 0: // "Elastic 3D Slam" - Spring scale with perspective tilt
-        gsap.fromTo(img,
-          {
-            opacity: 0,
-            scale: 0.18,
-            rotateZ: finalRot * 2.5,
-            rotateX: (Math.random() - 0.5) * 35,
-            y: (Math.random() - 0.5) * 25,
-          },
-          {
-            opacity: 1,
-            scale: 1,
-            rotateZ: finalRot,
-            rotateX: 0,
-            y: 0,
-            duration: 0.42,
-            ease: 'back.out(2.4)',
-          }
-        );
-        break;
+  // Smooth Portal Entrance Animation
+  const openPortal = (img, finalRot) => {
+    gsap.set(img, {
+      clipPath: 'circle(0% at 50% 50%)',
+      scale: 0.15,
+      rotateZ: finalRot - (finalRot >= 0 ? 25 : -25),
+      opacity: 0,
+      filter: 'brightness(1.8) contrast(1.2) blur(8px)',
+    });
 
-      case 1: // "Blade Slit Expand" - Camera shutter blade expand
-        gsap.fromTo(img,
-          {
-            opacity: 0,
-            scaleY: 0.04,
-            scaleX: 1.25,
-            rotateZ: finalRot * 1.5,
-            filter: 'contrast(1.4) brightness(1.2)',
-          },
-          {
-            opacity: 1,
-            scaleY: 1,
-            scaleX: 1,
-            rotateZ: finalRot,
-            filter: 'contrast(1) brightness(1)',
-            duration: 0.38,
-            ease: 'power4.out',
-          }
-        );
-        break;
-
-      case 2: // "Angular 3D Swoop" - Swing in from angled perspective
-        gsap.fromTo(img,
-          {
-            opacity: 0,
-            scale: 0.3,
-            rotateY: (Math.random() - 0.5) * 55,
-            rotateZ: finalRot * 2,
-            y: 40,
-          },
-          {
-            opacity: 1,
-            scale: 1,
-            rotateY: 0,
-            rotateZ: finalRot,
-            y: 0,
-            duration: 0.44,
-            ease: 'back.out(1.8)',
-          }
-        );
-        break;
-
-      case 3: // "Heavy Stamp Drop" - Heavy impact downslam
-      default:
-        gsap.fromTo(img,
-          {
-            opacity: 0,
-            scale: 1.55,
-            y: -60,
-            rotateZ: finalRot * 2,
-          },
-          {
-            opacity: 1,
-            scale: 1,
-            y: 0,
-            rotateZ: finalRot,
-            duration: 0.48,
-            ease: 'elastic.out(1.05, 0.55)',
-          }
-        );
-        break;
-    }
+    gsap.to(img, {
+      clipPath: 'circle(85% at 50% 50%)',
+      scale: 1,
+      rotateZ: finalRot,
+      opacity: 1,
+      filter: 'brightness(1) contrast(1) blur(0px)',
+      duration: 0.52,
+      ease: 'power3.out',
+    });
   };
 
-  // Fast Dramatic Out-Animation Dispatcher (0.18s - 0.22s)
-  const playExitAnimation = (item, onComplete, delay = 0) => {
-    const { element, outType, rot } = item;
+  // Smooth Portal Exit Animation (Snappy & Vortex-like)
+  const closePortal = (item, onComplete, delay = 0) => {
+    const { element, rot } = item;
     if (!element) return;
 
-    switch (outType) {
-      case 0: // "Shutter Collapse" - Snaps into a thin horizontal line
-        gsap.to(element, {
-          scaleY: 0.02,
-          scaleX: 1.2,
-          opacity: 0,
-          duration: 0.2,
-          delay,
-          ease: 'power3.in',
-          onComplete,
-        });
-        break;
-
-      case 1: // "Plummet Flick" - Whips downward like a flicked card
-        gsap.to(element, {
-          y: 85,
-          rotateZ: rot + (rot >= 0 ? 28 : -28),
-          scale: 0.5,
-          opacity: 0,
-          duration: 0.22,
-          delay,
-          ease: 'power4.in',
-          onComplete,
-        });
-        break;
-
-      case 2: // "Implosion Pop" - Snaps inward with brightness pop
-        gsap.to(element, {
-          scale: 0.08,
-          rotateZ: -rot * 2,
-          filter: 'brightness(2)',
-          opacity: 0,
-          duration: 0.18,
-          delay,
-          ease: 'back.in(2.2)',
-          onComplete,
-        });
-        break;
-
-      case 3: // "Vacuum Pull Up" - Zips vertically up
-      default:
-        gsap.to(element, {
-          y: -85,
-          scaleX: 0.25,
-          scaleY: 1.25,
-          opacity: 0,
-          duration: 0.2,
-          delay,
-          ease: 'power3.in',
-          onComplete,
-        });
-        break;
-    }
+    gsap.to(element, {
+      clipPath: 'circle(0% at 50% 50%)',
+      scale: 0.12,
+      rotateZ: rot + (rot >= 0 ? 25 : -25),
+      opacity: 0,
+      filter: 'brightness(2) contrast(1.3) blur(6px)',
+      duration: 0.28,
+      delay,
+      ease: 'power3.in',
+      onComplete,
+    });
   };
 
-  // Fast, staggered dismissal of all active cards
-  const dismissAllCards = () => {
-    if (activeImages.current.length === 0) {
-      setActiveCount(0);
-      return;
-    }
+  // Dismiss all active portals with a rapid staggered wave
+  const dismissAllPortals = () => {
+    if (activeImages.current.length === 0) return;
 
     const cardsToDismiss = [...activeImages.current];
     activeImages.current = [];
-    setActiveCount(0);
 
     cardsToDismiss.forEach((item, index) => {
-      const staggerDelay = index * 0.035; // Rapid wave
-      playExitAnimation(item, () => {
+      const staggerDelay = index * 0.04;
+      closePortal(item, () => {
         if (item.element && item.element.parentNode) {
           item.element.parentNode.removeChild(item.element);
         }
@@ -264,19 +150,27 @@ export default function ImageTrailTitle({ title = "GL_Tensei", eyebrow = "Design
       setIsHovered(true);
     }
 
+    // Update localized spotlight position relative to the heading
+    const headingRect = headingRef.current?.getBoundingClientRect();
+    if (headingRect) {
+      setSpotlightPos({
+        x: e.clientX - headingRect.left,
+        y: e.clientY - headingRect.top,
+      });
+    }
+
     const currentX = e.clientX;
 
-    // Check 1: Distance from last spawned position (at least MIN_SPACING horizontally)
+    // Check 1: Minimum horizontal spacing from last spawn point
     const distFromLast = Math.abs(currentX - lastPos.current.x);
     if (distFromLast < MIN_SPACING) {
-      // Reset idle timer even if not spawning, so images stay visible while mouse moves
       resetIdleTimer();
       return;
     }
 
-    // Check 2: Distance from ALL existing active images (guarantees at least 50% / half portion visibility)
+    // Check 2: Minimum horizontal spacing against all currently open portals
     const isTooCloseToExisting = activeImages.current.some(
-      (item) => Math.abs(item.x - currentX) < (MIN_SPACING - 10)
+      (item) => Math.abs(item.x - currentX) < (MIN_SPACING - 15)
     );
     if (isTooCloseToExisting) {
       resetIdleTimer();
@@ -286,29 +180,24 @@ export default function ImageTrailTitle({ title = "GL_Tensei", eyebrow = "Design
     // Update last spawn position
     lastPos.current = { x: currentX, y: e.clientY };
 
-    // Calculate vertical position anchored to the Title's centerline for perfect editorial alignment
-    const headingRect = headingRef.current?.getBoundingClientRect();
+    // Calculate vertical position anchored to the Title's centerline
     const titleCenterY = headingRect 
       ? headingRect.top + headingRect.height / 2 
       : e.clientY;
-    const cardY = titleCenterY + (Math.random() - 0.5) * 16;
+    const cardY = titleCenterY + (Math.random() - 0.5) * 14;
 
-    // Cycle image source and animation styles
+    // Cycle image source
     const imgSrc = TRAIL_IMAGES[imgIndex.current];
     imgIndex.current = (imgIndex.current + 1) % TRAIL_IMAGES.length;
-    
-    // Increment z-index inside the trail layer (stays z-20 to z-28, safely behind Title at z-40)
+
+    // Increment z-index inside the trail layer (stays safely behind the Title at z-40)
     zIndexCounter.current = 20 + ((zIndexCounter.current - 19) % 9);
 
-    const inType = animStyleCounter.current % 4;
-    const outType = (animStyleCounter.current + 1) % 4;
-    animStyleCounter.current += 1;
-
-    // Create image element dynamically for maximum 60fps performance
+    // Create portal image element
     const img = document.createElement('img');
     img.src = imgSrc;
-    img.alt = 'Visual Trail Preview';
-    img.className = 'fixed pointer-events-none object-cover rounded-xl shadow-[0_20px_50px_rgba(0,0,0,0.35)] border-2 border-white/85 select-none w-40 h-56 sm:w-48 sm:h-64 md:w-56 md:h-76 will-change-transform';
+    img.alt = 'Portal Preview';
+    img.className = 'fixed pointer-events-none object-cover rounded-2xl shadow-[0_0_35px_rgba(217,119,70,0.35),0_20px_50px_rgba(0,0,0,0.45)] border-2 border-white/95 select-none w-44 h-60 sm:w-52 sm:h-72 md:w-60 md:h-80 will-change-transform';
     
     // Position centered on cursor X and title baseline Y
     img.style.left = `${currentX}px`;
@@ -318,32 +207,29 @@ export default function ImageTrailTitle({ title = "GL_Tensei", eyebrow = "Design
 
     trailContainerRef.current.appendChild(img);
 
-    // Random tilt angle between -9 and +9 degrees (editorial fashion style)
-    const finalRot = (Math.random() - 0.5) * 18;
+    // Natural editorial tilt between -8 and +8 degrees
+    const finalRot = (Math.random() - 0.5) * 16;
 
-    // Trigger dramatic entrance animation
-    playEntranceAnimation(img, inType, finalRot);
+    // Open portal animation
+    openPortal(img, finalRot);
 
     const cardItem = {
       element: img,
       x: currentX,
       y: cardY,
       rot: finalRot,
-      outType,
     };
 
     activeImages.current.push(cardItem);
-    setActiveCount(activeImages.current.length);
 
-    // Enforce max active limit: if more than 7, smoothly and rapidly dismiss oldest
-    if (activeImages.current.length > 7) {
+    // Keep max active portals to 6 for clean aesthetics
+    if (activeImages.current.length > 6) {
       const oldest = activeImages.current.shift();
-      playExitAnimation(oldest, () => {
+      closePortal(oldest, () => {
         if (oldest.element && oldest.element.parentNode) {
           oldest.element.parentNode.removeChild(oldest.element);
         }
       });
-      setActiveCount(activeImages.current.length);
     }
 
     resetIdleTimer();
@@ -352,7 +238,7 @@ export default function ImageTrailTitle({ title = "GL_Tensei", eyebrow = "Design
   const resetIdleTimer = () => {
     clearTimeout(idleTimer.current);
     idleTimer.current = setTimeout(() => {
-      dismissAllCards();
+      dismissAllPortals();
       setIsHovered(false);
     }, IDLE_DELAY_MS);
   };
@@ -369,12 +255,10 @@ export default function ImageTrailTitle({ title = "GL_Tensei", eyebrow = "Design
     clearTimeout(idleTimer.current);
     clearTimeout(leaveTimer.current);
     leaveTimer.current = setTimeout(() => {
-      dismissAllCards();
+      dismissAllPortals();
       setIsHovered(false);
     }, LEAVE_DELAY_MS);
   };
-
-  const isAdapting = isHovered || activeCount > 0;
 
   return (
     <div 
@@ -384,7 +268,7 @@ export default function ImageTrailTitle({ title = "GL_Tensei", eyebrow = "Design
       onMouseLeave={handleMouseLeave}
       className="relative z-30 space-y-4 mb-16 text-center flex flex-col items-center justify-center cursor-default select-none py-6 px-2"
     >
-      {/* Dynamic Trail Portal: Layered BEHIND the Title at z-20 */}
+      {/* Dynamic Portal Visuals Layer: Layered BEHIND the Title at z-20 */}
       <div 
         ref={trailContainerRef} 
         className="pointer-events-none fixed inset-0 z-20 overflow-hidden" 
@@ -395,34 +279,40 @@ export default function ImageTrailTitle({ title = "GL_Tensei", eyebrow = "Design
         {eyebrow}
       </div>
 
-      {/* Centered Big Title: GL_Tensei (z-40 so it is NEVER covered by the images) */}
-      <div className="relative inline-block group z-40">
+      {/* Centered Big Title: GL_Tensei (z-40 so it is NEVER covered by portals) */}
+      <div className="relative inline-block z-40">
+        
+        {/* Base Layer: Solid, 100% visible charcoal text that NEVER disappears */}
         <h1 
           ref={headingRef}
-          className={`font-display font-extrabold tracking-tighter text-6xl sm:text-8xl md:text-9xl lg:text-[10rem] xl:text-[11.5rem] leading-[0.88] uppercase select-none text-center pointer-events-none transition-all duration-500 relative z-40 ${
-            isAdapting
-              ? 'title-adapting-gradient mix-blend-difference'
-              : 'text-charcoal'
-          }`}
-          style={{
-            WebkitTextStroke: isAdapting 
-              ? '1.5px rgba(255, 255, 255, 0.45)' 
-              : 'none',
-          }}
+          className="font-display font-extrabold tracking-tighter text-6xl sm:text-8xl md:text-9xl lg:text-[10rem] xl:text-[11.5rem] leading-[0.88] uppercase select-none text-center text-charcoal pointer-events-none relative z-40"
         >
           <span className="block text-center">
             {title}
           </span>
         </h1>
 
-        {/* Tactile hint */}
-        <span 
-          className={`font-mono text-[10px] tracking-widest uppercase block pt-2 transition-opacity duration-300 pointer-events-none ${
-            isAdapting ? 'opacity-100 text-terracotta' : 'opacity-0 text-charcoal-subtle'
-          }`}
+        {/* Localized Spotlight Layer: Only the pointed part illuminates into vibrant gradient */}
+        <div 
+          className="absolute inset-0 font-display font-extrabold tracking-tighter text-6xl sm:text-8xl md:text-9xl lg:text-[10rem] xl:text-[11.5rem] leading-[0.88] uppercase select-none text-center pointer-events-none z-40"
+          style={{
+            opacity: isHovered ? 1 : 0,
+            background: 'linear-gradient(135deg, #D97746 0%, #FF8A50 25%, #F59E0B 50%, #FF6B4A 75%, #D97746 100%)',
+            backgroundSize: '200% 200%',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            clipPath: isHovered 
+              ? `circle(140px at ${spotlightPos.x}px ${spotlightPos.y}px)` 
+              : 'circle(0px at 0px 0px)',
+            transition: 'clip-path 0.08s ease-out, opacity 0.25s ease-out',
+          }}
+          aria-hidden="true"
         >
-          [ GLIDE CURSOR OVER TEXT TO REVEAL VISUALS ]
-        </span>
+          <span className="block text-center">
+            {title}
+          </span>
+        </div>
+
       </div>
     </div>
   );
