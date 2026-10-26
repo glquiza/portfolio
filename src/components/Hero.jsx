@@ -132,20 +132,19 @@ export default function Hero() {
           </div>
         </div>
 
-        {/* Main Headline with SplitText Mask */}
-        <div className="space-y-4 mb-12">
-          {/* Text on top */}
-          <div className="hero-eyebrow flex items-center gap-3 font-mono text-xs sm:text-sm md:text-base uppercase tracking-[0.24em] text-terracotta font-semibold">
-            <span className="w-3 h-0.5 bg-terracotta"></span>
-            <span>Design. Development. Marketing.</span>
+        {/* Main Headline with SplitText Mask (Centered) */}
+        <div className="space-y-4 mb-16 text-center flex flex-col items-center justify-center">
+          {/* Centered text on top without dash */}
+          <div className="hero-eyebrow font-mono text-xs sm:text-sm md:text-base uppercase tracking-[0.26em] text-terracotta font-semibold text-center">
+            Design. Development. Marketing.
           </div>
 
-          {/* Big Title: GL_Tensei */}
+          {/* Centered Big Title: GL_Tensei */}
           <h1 
             ref={headingRef}
-            className="font-display font-extrabold tracking-tighter text-charcoal text-6xl sm:text-8xl md:text-9xl lg:text-[10rem] xl:text-[11.5rem] leading-[0.88] uppercase select-none"
+            className="font-display font-extrabold tracking-tighter text-charcoal text-6xl sm:text-8xl md:text-9xl lg:text-[10rem] xl:text-[11.5rem] leading-[0.88] uppercase select-none text-center"
           >
-            <span className="hero-line-reveal block">
+            <span className="hero-line-reveal block text-center">
               GL_Tensei
             </span>
           </h1>
